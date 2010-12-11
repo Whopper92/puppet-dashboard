@@ -1,0 +1,32 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+# Uncomment these fllowing lines to display lots of debugging information during the build process:
+export DH_VERBOSE=1
+export DH_OPTIONS=-v
+
+%:
+	dh $@
+
+override_dh_install:
+	install -d debian/puppet-dashboard/etc/puppet-dashboard
+	install -d debian/puppet-dashboard/usr/share/puppet-dashboard
+	install -d debian/puppet-dashboard/usr/share/doc/puppet-dashboard/examples
+	cp -r app bin config db ext lib public script spec vendor VERSION CHANGELOG COPYING LICENSE README.markdown README_PACKAGES.markdown RELEASE_NOTES.md Rakefile debian/puppet-dashboard/usr/share/puppet-dashboard/
+	install config/database.yml.example debian/puppet-dashboard/etc/puppet-dashboard/database.yml
+	install config/database.yml.example debian/puppet-dashboard/usr/share/doc/puppet-dashboard/examples/database.yml.example
+	# Clean up the "extra" license files
+	rm -f debian/puppet-dashboard/usr/share/puppet-dashboard/config/database.yml.example
+	rm -f debian/puppet-dashboard/usr/share/puppet-dashboard/doc/README_FOR_APP
+	rm -f debian/puppet-dashboard/usr/share/puppet-dashboard/vendor/plugins/*/*LICENSE
+	rm -f debian/puppet-dashboard/usr/share/puppet-dashboard/vendor/plugins/*/License.txt
+	rm -f debian/puppet-dashboard/usr/share/puppet-dashboard/vendor/plugins/*/COPYING
+	rm -f debian/puppet-dashboard/usr/share/puppet-dashboard/vendor/gems/*/COPYING
+	rm -f debian/puppet-dashboard/usr/share/puppet-dashboard/vendor/gems/*/*LICENSE
+	rm -f debian/puppet-dashboard/usr/share/puppet-dashboard/vendor/gems/*/License.txt
+	rm -f debian/puppet-dashboard/usr/share/puppet-dashboard/vendor/rails/*/*LICENSE
+	# ...and other various files
+	rm -f debian/puppet-dashboard/.gems
+	rm -f debian/puppet-dashboard/.autotest
+	find debian/puppet-dashboard -name '.gitignore' -type f | xargs rm -f
+	find debian/puppet-dashboard -name '.git' -type d | xargs rm -rf

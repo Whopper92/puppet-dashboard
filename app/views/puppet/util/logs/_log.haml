@@ -1,0 +1,9 @@
+%tr{:class => "puppet_log puppet_log_level_#{log.level}"}
+  %td.level
+    %code= h log.level
+  %td
+    %code= h log.message
+  %td
+    %code= h log.source
+  %td.nowrap
+    %code= log.time

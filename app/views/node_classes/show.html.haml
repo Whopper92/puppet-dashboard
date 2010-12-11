@@ -1,0 +1,20 @@
+#sidebar= render 'shared/node_manager_sidebar'
+#main
+  .header
+    %h2
+      Class:
+      = @node_class.name
+    %ul.actions
+      %li= link_to 'Edit', edit_node_class_path(@node_class), :class => "edit button"
+      %li= link_to 'Destroy', @node_class, :confirm => 'Are you sure?', :method => :delete, :class => "delete button"
+
+  .item
+    - if @node_class.nodes.present?
+      .section
+        = render 'statuses/run_failure', :nodes => @node_class.nodes
+    .section
+      %h3 Nodes in this class
+      - if @node_class.nodes.present?
+        = render 'nodes/nodes', :nodes => @node_class.nodes
+      - else
+        = describe_no_matches_for :nodes, :class

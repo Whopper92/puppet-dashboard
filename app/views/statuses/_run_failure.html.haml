@@ -1,0 +1,26 @@
+- nodes = local_assigns[:nodes]
+- node = local_assigns[:node]
+- args = {:start => Status::INTERVAL_CUTOFF.ago, :limit => Status::INTERVAL_CUTOFF/1.day}
+- args[:node] = node if node
+- args[:nodes] = nodes if nodes
+- statuses = Status.by_interval(args)
+
+%h3 Daily run status
+%p.legend Number and status of runs during the <strong>last #{Status::INTERVAL_CUTOFF/1.day} days</strong>:
+
+- if statuses.present?
+  %table.inspector.data.status.bar
+    %thead
+      %tr.labels
+        - statuses.each do |status|
+          %th= status.start.to_s(:date)
+    %tbody
+      %tr.succeeded
+        - statuses.each do |status|
+          %td= status.total - status.failed
+      %tr.failed
+        - statuses.each do |status|
+          %td= status.failed
+- else
+  %p 
+    = describe_no_matches_as 'No runs found to report'

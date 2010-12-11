@@ -1,0 +1,34 @@
+!!!
+%html{ :xmlns => "http://www.w3.org/1999/xhtml" }
+  %head
+    - page_title = yield(:page_title)
+    %title= [ page_title, 'Puppet Node Manager'].compact.join(' - ')
+    %link{ :href => image_path("favicon.ico"), :rel => "shortcut icon" }
+    %meta{ :content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type" }
+
+    = javascript_include_tag 'jquery.min'
+    :javascript
+      var relative_url_root = '#{ActionController::Base.relative_url_root}';
+      $.noConflict();
+
+    = stylesheet_link_tag 'reset', 'layout', 'forms', 'tables', 'jquery.ui.autocomplete.css', 'typography', 'links', 'token-input-facebook', 'tipsy', 'application', :cache => 'all'
+    = javascript_include_tag 'prototype', 'jrails', 'jquery-ui.min', 'jquery.tokeninput', 'excanvas.min', 'raphael-min', 'grafico.min', 'jquery.form', 'jquery.placeholders', 'jquery.ui.autocomplete', 'jquery.ui.autocomplete.ext', 'jquery.tipsy', 'search', 'application', :cache => 'all'
+
+  - body_classes = [ "#{controller.controller_name}_controller", "#{controller.controller_name}_#{controller.action_name}_action" ]
+  - body_classes << "#{controller.controller_name}_form_action" if %w[new create edit update].include?(controller.action_name)
+  %body{:class => body_classes}
+    #wrap
+      #header
+        = render 'shared/global_nav'
+        = render 'shared/secondary_nav'
+      #content
+        - [:success, :warning, :failure].each do |type|
+          - if message = flash[type]
+            %div.section#flash{:class => type}
+              .close= link_to_function icon(:close), "jQuery('#flash').hide()"
+              %p
+                = icon(type)
+                = message
+        = yield
+      #footer
+        %p= link_to "&copy; Copyright #{Time.now.year} Puppet Labs", 'http://puppetlabs.com/'

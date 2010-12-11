@@ -1,0 +1,10 @@
+= focus :node_class_name
+
+= header_for(form)
+
+.item
+  = form.error_messages
+
+  .element
+    = form.label :name
+    = form.text_field :name, :placeholder => "Class name"

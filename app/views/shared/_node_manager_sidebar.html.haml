@@ -1,0 +1,24 @@
+.group
+  %h3{:class => active_if(controller_name == "nodes" && action_name == "index")}= link_to "Nodes", nodes_path
+  %span.count= Node.count
+  %ul
+    - for currentness in [true, false]
+      - for successfulness in [true, false]
+        %li{:class => active_if(controller_name == 'nodes' && params[:current] && (params[:current] == "true") == currentness && params[:successful] && (params[:successful] == "true") == successfulness && parent.nil?)}
+          - label = Node.label_for_currentness_and_successfulness(currentness, successfulness)
+          = link_to label, nodes_path(:current => currentness.to_s, :successful => successfulness.to_s)
+          - count = Node.count_by_currentness_and_successfulness(currentness, successfulness)
+          %span.count{:class => counter_class(count, currentness && !successfulness)}= count
+    %li{:class => active_if(controller_name == 'nodes' && action_name == 'unreported' && parent.nil?)}
+      = link_to "Never reported", unreported_nodes_path
+      - count = Node.count_unreported
+      %span.count{:class => counter_class(count, true)}= count
+    %li{:class => active_if(controller_name == 'nodes' && action_name == 'no_longer_reporting' && parent.nil?)}
+      = link_to "Not currently reporting", no_longer_reporting_nodes_path
+      - count = Node.count_no_longer_reporting
+      %span.count{:class => counter_class(count, true)}= count
+  .footer.actionbar
+    = link_to "Add node", new_node_path, :class => 'button'
+
+- for type in [NodeClass, NodeGroup]
+  = render "shared/node_manager_sidebar_for_type", :type => type

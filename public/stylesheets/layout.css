@@ -1,0 +1,20 @@
+#wrap {
+  margin: 0 1em 1em;
+}
+
+#header {
+  margin-bottom: 1em;
+}
+
+#content #sidebar { width: 20%; float: left; }
+
+#content #main { width: 80%; float: left; }
+#content #main.full { width: 100%; }
+
+#content #main #list {
+  max-height: 300px;
+  overflow: auto;
+}
+#content #main #item {
+  background: #FFF;
+}
