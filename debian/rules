@@ -19,6 +19,7 @@ binary-install/pe-puppet-dashboard::
 	    db \
 	    ext \
 	    lib \
+	    Rakefile \
 	    script \
 	    spec \
 	    vendor \
