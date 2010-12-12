@@ -1,0 +1,5 @@
+pe-puppet-dashboard (1.0.4-1puppet1) lucid; urgency=low
+
+  * [5065e9a] Start packaging Puppet Dashboard for Puppet Enterprise
+
+ -- Jacob Helwig <jacob@puppetlabs.com>  Sat, 11 Dec 2010 17:52:50 -0800
