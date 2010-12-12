@@ -1,9 +1,9 @@
 dir-or-file-in-opt opt/puppet/share/puppet-dashboard/vendor/*
 dir-or-file-in-opt opt/puppet/
 dir-or-file-in-opt opt/puppet/share/
-dir-or-file-in-opt opt/puppet/share/puppet-dasboard/
-dir-or-file-in-opt opt/puppet/share/puppet-dasboard/config/
-dir-or-file-in-opt opt/puppet/share/puppet-dasboard/config/database.yml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/config/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/config/database.yml
 dir-or-file-in-opt opt/puppet/share/puppet-dashboard/
 dir-or-file-in-opt opt/puppet/share/puppet-dashboard/RELEASE_NOTES.md
 dir-or-file-in-opt opt/puppet/share/puppet-dashboard/VERSION
