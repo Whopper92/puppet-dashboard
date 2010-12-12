@@ -35,6 +35,7 @@ Please fix this and reinstall this package." >&2
     # Setup proper permissions
     chown -R pe-puppet-dashboard:pe-puppet-dashboard /var/log/pe-puppet-dashboard
     chown -R pe-puppet-dashboard:pe-puppet-dashboard /var/opt/pe-puppet-dashboard
+    chown pe-puppet-dashboard:pe-puppet-dashboard /opt/puppet/share/puppet-dashboard/config/environment.rb
 
 
     if [ ! -d /etc/puppetlabs/puppet-dashboard ]; then
