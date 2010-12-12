@@ -1,3 +1,10 @@
+pe-puppet-dashboard (1.0.4-1puppet3) lucid; urgency=low
+
+  * [5e582e8] Fix spelling of dashboard in links, and lintian-overrides
+  * [c85bb1a] Include Rakefile in packaged files
+
+ -- Jacob Helwig <jacob@puppetlabs.com>  Sun, 12 Dec 2010 12:41:19 -0800
+
 pe-puppet-dashboard (1.0.4-1puppet2) lucid; urgency=low
 
   * [c7a2071] Create missing /var/log/pe-puppet-dashboard
