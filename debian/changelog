@@ -1,3 +1,9 @@
+pe-puppet-dashboard (1.0.4-1puppet2) lucid; urgency=low
+
+  * [c7a2071] Create missing /var/log/pe-puppet-dashboard
+
+ -- Jacob Helwig <jacob@puppetlabs.com>  Sun, 12 Dec 2010 11:05:16 -0800
+
 pe-puppet-dashboard (1.0.4-1puppet1) lucid; urgency=low
 
   * [5065e9a] Start packaging Puppet Dashboard for Puppet Enterprise
