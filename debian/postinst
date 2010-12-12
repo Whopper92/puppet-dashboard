@@ -1,0 +1,58 @@
+#!/bin/sh -e
+
+# Move a conffile without triggering a dpkg question
+mv_conffile() {
+    local OLDCONFFILE="$1"
+    local NEWCONFFILE="$2"
+
+    [ -e "$OLDCONFFILE" ] || return 0
+
+    echo "Preserving user changes to $NEWCONFFILE ..."
+    mv -f "$NEWCONFFILE" "$NEWCONFFILE".dpkg-new
+    mv -f "$OLDCONFFILE" "$NEWCONFFILE"
+}
+
+case "$1" in
+configure)
+    # Make sure the user exists.
+    if ! getent passwd pe-puppet-dashboard > /dev/null; then
+        adduser --system --quiet --home /opt/puppet/share/puppet-dashboard --no-create-home \
+            --shell /bin/false --group --gecos "Puppet Dashboard" pe-puppet-dashboard
+    fi
+
+    # Check the validity of the puppet-dashboard user and group
+    if [ "`id -u pe-puppet-dashboard`" -eq 0 ]; then
+        echo "The pe-puppet-dashboard user must not have uid 0 (root).
+Please fix this and reinstall this package." >&2
+        exit 1
+    fi
+    if [ "`id -g pe-puppet-dashboard`" -eq 0 ]; then
+        echo "The pe-puppet-dashboard system user must not have root as its primary group.
+Please fix this and reinstall this package." >&2
+        exit 1
+    fi
+
+    # Setup proper permissions
+    chown -R pe-puppet-dashboard:pe-puppet-dashboard /var/log/pe-puppet-dashboard
+    chown -R pe-puppet-dashboard:pe-puppet-dashboard /var/opt/pe-puppet-dashboard
+
+
+    if [ ! -d /etc/puppetlabs/puppet-dashboard ]; then
+        mkdir /etc/puppetlabs/puppet-dashboard
+    fi
+
+    if [ -f /opt/puppet/share/puppet-dashboard/config/database.yml ] && [ ! -e /etc/puppetlabs/puppet-dashboard/database.yml ]; then
+        mv_conffile "/opt/puppet/share/puppet-dashboard/config/database.yml" "/etc/puppetlabs/puppet-dashboard/database.yml"
+    fi
+
+    chown -R pe-puppet-dashboard:pe-puppet-dashboard /etc/puppetlabs/puppet-dashboard
+    chmod -R o-rwx /etc/puppetlabs/puppet-dashboard
+    find /etc/puppetlabs/puppet-dashboard -type f -exec chmod a-x {} \;
+
+    if [ ! -h /opt/puppet/share/puppet-dashboard/config/database.yml ]; then
+        ln -s /etc/puppetlabs/puppet-dashboard/database.yml /opt/puppet/share/puppet-dashboard/config/database.yml
+    fi
+
+esac
+
+#DEBHELPER#

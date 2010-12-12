@@ -1,0 +1,16 @@
+Source: pe-puppet-dashboard
+Section: web
+Priority: optional
+Maintainer: Jacob Helwig <jacob@puppetlabs.com>
+Build-Depends: cdbs, debhelper (>> 7)
+Standards-Version: 3.9.1
+Homepage: http://www.puppetlabs.com
+
+Package: pe-puppet-dashboard
+Architecture: all
+Pre-Depends: adduser
+Depends: ${shlibs:Depeneds}, ${misc:Depends}, pe-ruby1.8, pe-rubygems, pe-rake, pe-ruby-mysql,
+ pe-httpd-passenger
+Description: Web reporting, and external node classification for Puppet
+ Puppet Dashboard provides a web interface to view node reports, and
+ provides an enternal node classifier for the Puppet Master.

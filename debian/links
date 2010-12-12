@@ -1,0 +1,4 @@
+var/log/pe-puppet-dashboard                  opt/puppet/share/puppet-dashboard/log
+var/opt/pe-puppet-dashboard/tmp              opt/puppet/share/puppet-dashboard/tmp
+var/opt/pe-puppet-dashboard/public           opt/puppet/share/puppet-dashboard/public
+etc/puppetlabs/puppet-dashboard/database.yml opt/puppet/share/puppet-dasboard/config/database.yml
