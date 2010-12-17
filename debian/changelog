@@ -1,3 +1,9 @@
+pe-puppet-dashboard (1.0.4-1puppet5) lucid; urgency=low
+
+  * Update packaging tooling
+
+ -- Jacob Helwig <jacob@puppetlabs.com>  Fri, 17 Dec 2010 11:39:49 -0800
+
 pe-puppet-dashboard (1.0.4-1puppet4) lucid; urgency=low
 
   * [a112e8b] Fix permissions on environment.rb
