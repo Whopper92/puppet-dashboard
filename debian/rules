@@ -29,6 +29,8 @@ binary-install/pe-puppet-dashboard::
 	cp -r $(CURDIR)/public $(CURDIR)/debian/$(cdbs_curpkg)/var/opt/$(cdbs_curpkg)
 	chmod -R a+rx $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/script
 	rm -rf $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/ext/packaging
+	mkdir -p $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_etc)/httpd/conf.d/puppetdashboard.conf
+	touch $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_etc)/httpd/conf.d/puppetdashboard.conf
 	# Clean up the "extra" files
 	rm $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/config/database.yml.example
 	rm $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/vendor/plugins/*/*LICENSE
