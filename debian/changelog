@@ -1,3 +1,9 @@
+pe-puppet-dashboard (1.0.4-1puppet7) lucid; urgency=low
+
+  * [0a6f854] Fix path in mkdir for puppetdashboard.conf
+
+ -- Jacob Helwig <jacob@puppetlabs.com>  Wed, 05 Jan 2011 19:54:02 -0500
+
 pe-puppet-dashboard (1.0.4-1puppet6) lucid; urgency=low
 
   * [5f5efaf] Add conffiles for files created by PE installer
