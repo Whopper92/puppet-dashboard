@@ -1,4 +1,4 @@
-pe-puppet-dashboard (1.0.4-1puppet7) lucid; urgency=low
+pe-puppet-dashboard (1.0.4-1puppet7) lenny; urgency=low
 
   * [0a6f854] Fix path in mkdir for puppetdashboard.conf
 
