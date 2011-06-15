@@ -371,4 +371,114 @@ wrong-path-for-interpreter ./opt/puppet/share/puppet-dashboard/script/spec (#!/o
 ruby-script-but-no-ruby-dep ./opt/puppet/share/puppet-dashboard/script/spec
 wrong-path-for-interpreter ./opt/puppet/share/puppet-dashboard/script/spec_server (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
 ruby-script-but-no-ruby-dep ./opt/puppet/share/puppet-dashboard/script/spec_server
+pe-puppet-dashboard binary: wrong-path-for-interpreter opt/puppet/share/puppet-dashboard/bin/external_node (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+pe-puppet-dashboard binary: ruby-script-but-no-ruby-dep opt/puppet/share/puppet-dashboard/bin/external_node
+pe-puppet-dashboard binary: wrong-path-for-interpreter opt/puppet/share/puppet-dashboard/script/about (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+pe-puppet-dashboard binary: ruby-script-but-no-ruby-dep opt/puppet/share/puppet-dashboard/script/about
+pe-puppet-dashboard binary: wrong-path-for-interpreter opt/puppet/share/puppet-dashboard/script/autospec (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+pe-puppet-dashboard binary: ruby-script-but-no-ruby-dep opt/puppet/share/puppet-dashboard/script/autospec
+pe-puppet-dashboard binary: wrong-path-for-interpreter opt/puppet/share/puppet-dashboard/script/console (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+pe-puppet-dashboard binary: ruby-script-but-no-ruby-dep opt/puppet/share/puppet-dashboard/script/console
+pe-puppet-dashboard binary: wrong-path-for-interpreter opt/puppet/share/puppet-dashboard/script/dbconsole (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+pe-puppet-dashboard binary: ruby-script-but-no-ruby-dep opt/puppet/share/puppet-dashboard/script/dbconsole
+pe-puppet-dashboard binary: wrong-path-for-interpreter opt/puppet/share/puppet-dashboard/script/destroy (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+pe-puppet-dashboard binary: ruby-script-but-no-ruby-dep opt/puppet/share/puppet-dashboard/script/destroy
+pe-puppet-dashboard binary: wrong-path-for-interpreter opt/puppet/share/puppet-dashboard/script/generate (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+pe-puppet-dashboard binary: ruby-script-but-no-ruby-dep opt/puppet/share/puppet-dashboard/script/generate
+pe-puppet-dashboard binary: wrong-path-for-interpreter opt/puppet/share/puppet-dashboard/script/performance/benchmarker (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+pe-puppet-dashboard binary: ruby-script-but-no-ruby-dep opt/puppet/share/puppet-dashboard/script/performance/benchmarker
+pe-puppet-dashboard binary: wrong-path-for-interpreter opt/puppet/share/puppet-dashboard/script/performance/profiler (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+pe-puppet-dashboard binary: ruby-script-but-no-ruby-dep opt/puppet/share/puppet-dashboard/script/performance/profiler
+pe-puppet-dashboard binary: wrong-path-for-interpreter opt/puppet/share/puppet-dashboard/script/plugin (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+pe-puppet-dashboard binary: ruby-script-but-no-ruby-dep opt/puppet/share/puppet-dashboard/script/plugin
+pe-puppet-dashboard binary: wrong-path-for-interpreter opt/puppet/share/puppet-dashboard/script/runner (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+pe-puppet-dashboard binary: ruby-script-but-no-ruby-dep opt/puppet/share/puppet-dashboard/script/runner
+pe-puppet-dashboard binary: wrong-path-for-interpreter opt/puppet/share/puppet-dashboard/script/server (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+pe-puppet-dashboard binary: ruby-script-but-no-ruby-dep opt/puppet/share/puppet-dashboard/script/server
+pe-puppet-dashboard binary: wrong-path-for-interpreter opt/puppet/share/puppet-dashboard/script/spec (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+pe-puppet-dashboard binary: ruby-script-but-no-ruby-dep opt/puppet/share/puppet-dashboard/script/spec
+pe-puppet-dashboard binary: wrong-path-for-interpreter opt/puppet/share/puppet-dashboard/script/spec_server (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+pe-puppet-dashboard binary: ruby-script-but-no-ruby-dep opt/puppet/share/puppet-dashboard/script/spec_server
+pe-puppet-dashboard binary: executable-not-elf-or-script var/opt/pe-puppet-dashboard/public/stylesheets/images/icons/failure.png
+pe-puppet-dashboard binary: executable-not-elf-or-script var/opt/pe-puppet-dashboard/public/images/icons/delete.png
+pe-puppet-dashboard binary: executable-not-elf-or-script var/opt/pe-puppet-dashboard/public/images/icons/edit.png
+pe-puppet-dashboard binary: executable-not-elf-or-script var/opt/pe-puppet-dashboard/public/images/icons/failure.png
+pe-puppet-dashboard binary: executable-not-elf-or-script var/opt/pe-puppet-dashboard/public/images/icons/success.png
+pe-puppet-dashboard binary: executable-not-elf-or-script var/opt/pe-puppet-dashboard/public/images/icons/cancel.png
+pe-puppet-dashboard binary: executable-not-elf-or-script var/opt/pe-puppet-dashboard/public/images/icons/notice.png
+pe-puppet-dashboard binary: executable-not-elf-or-script var/opt/pe-puppet-dashboard/public/stylesheets/images/icons/delete.png
+pe-puppet-dashboard binary: executable-not-elf-or-script var/opt/pe-puppet-dashboard/public/images/icons/error.png
+pe-puppet-dashboard binary: executable-not-elf-or-script var/opt/pe-puppet-dashboard/public/images/loading.gif
+pe-puppet-dashboard binary: executable-not-elf-or-script var/opt/pe-puppet-dashboard/public/stylesheets/images/icons/edit.png
+pe-puppet-dashboard binary: executable-not-elf-or-script var/opt/pe-puppet-dashboard/public/images/icons/warning.png
+pe-puppet-dashboard binary: executable-not-elf-or-script var/opt/pe-puppet-dashboard/public/stylesheets/images/icons/success.png
+pe-puppet-dashboard binary: executable-not-elf-or-script var/opt/pe-puppet-dashboard/public/images/close.gif
+pe-puppet-dashboard binary: executable-not-elf-or-script var/opt/pe-puppet-dashboard/public/images/icons/computer.png
+pe-puppet-dashboard binary: executable-not-elf-or-script var/opt/pe-puppet-dashboard/public/stylesheets/images/icons/computer.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/404.html
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/422.html
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/500.html
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/images/close.gif
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/images/dashboard_logo.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/images/favicon.ico
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/images/icons/add.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/images/icons/add_grey.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/images/icons/add_light_grey.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/images/icons/cancel.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/images/icons/close.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/images/icons/computer.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/images/icons/delete.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/images/icons/edit.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/images/icons/error.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/images/icons/failure.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/images/icons/notice.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/images/icons/search.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/images/icons/success.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/images/icons/warning.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/images/loading.gif
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/images/rails.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/javascripts/application.js
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/javascripts/excanvas.min.js
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/javascripts/grafico.min.js
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/javascripts/jquery-ui.min.js
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/javascripts/jquery.form.js
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/javascripts/jquery.livequery.js
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/javascripts/jquery.min.js
+pe-puppet-dashboard binary: embedded-javascript-library var/opt/pe-puppet-dashboard/public/javascripts/jquery.min.js
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/javascripts/jquery.placeholders.js
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/javascripts/jquery.templating.js
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/javascripts/jquery.tipsy.js
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/javascripts/jquery.tokeninput.js
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/javascripts/jquery.ui.autocomplete.ext.js
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/javascripts/jquery.ui.autocomplete.js
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/javascripts/jrails.js
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/javascripts/prototype.js
+pe-puppet-dashboard binary: embedded-javascript-library var/opt/pe-puppet-dashboard/public/javascripts/prototype.js
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/javascripts/raphael-min.js
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/javascripts/search.js
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/application.css
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/forms.css
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/images/grid.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/images/header.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/images/icons/add.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/images/icons/add_grey.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/images/icons/add_light_grey.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/images/icons/computer.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/images/icons/delete.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/images/icons/edit.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/images/icons/failure.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/images/icons/search.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/images/icons/success.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/images/tipsy.gif
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/images/white-overlay.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/images/white-overlays.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/jquery.ui.autocomplete.css
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/layout.css
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/links.css
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/reset.css
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/sass/application.scss
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/tables.css
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/tipsy.css
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/token-input-facebook.css
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/typography.css
 
