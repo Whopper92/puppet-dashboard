@@ -4,39 +4,39 @@ pe-puppet-dashboard (1.0.4-1puppet7) lenny; urgency=low
 
  -- Jacob Helwig <jacob@puppetlabs.com>  Wed, 05 Jan 2011 19:54:02 -0500
 
-pe-puppet-dashboard (1.0.4-1puppet6) lucid; urgency=low
+pe-puppet-dashboard (1.0.4-1puppet6) lenny; urgency=low
 
   * [5f5efaf] Add conffiles for files created by PE installer
 
  -- Jacob Helwig <jacob@puppetlabs.com>  Tue, 04 Jan 2011 14:00:39 -0500
 
-pe-puppet-dashboard (1.0.4-1puppet5) lucid; urgency=low
+pe-puppet-dashboard (1.0.4-1puppet5) lenny; urgency=low
 
   * Update packaging tooling
 
  -- Jacob Helwig <jacob@puppetlabs.com>  Fri, 17 Dec 2010 11:39:49 -0800
 
-pe-puppet-dashboard (1.0.4-1puppet4) lucid; urgency=low
+pe-puppet-dashboard (1.0.4-1puppet4) lenny; urgency=low
 
   * [a112e8b] Fix permissions on environment.rb
   * [689390f] Include the public dir in the package
 
  -- Jacob Helwig <jacob@puppetlabs.com>  Sun, 12 Dec 2010 12:58:01 -0800
 
-pe-puppet-dashboard (1.0.4-1puppet3) lucid; urgency=low
+pe-puppet-dashboard (1.0.4-1puppet3) lenny; urgency=low
 
   * [5e582e8] Fix spelling of dashboard in links, and lintian-overrides
   * [c85bb1a] Include Rakefile in packaged files
 
  -- Jacob Helwig <jacob@puppetlabs.com>  Sun, 12 Dec 2010 12:41:19 -0800
 
-pe-puppet-dashboard (1.0.4-1puppet2) lucid; urgency=low
+pe-puppet-dashboard (1.0.4-1puppet2) lenny; urgency=low
 
   * [c7a2071] Create missing /var/log/pe-puppet-dashboard
 
  -- Jacob Helwig <jacob@puppetlabs.com>  Sun, 12 Dec 2010 11:05:16 -0800
 
-pe-puppet-dashboard (1.0.4-1puppet1) lucid; urgency=low
+pe-puppet-dashboard (1.0.4-1puppet1) lenny; urgency=low
 
   * [5065e9a] Start packaging Puppet Dashboard for Puppet Enterprise
 
