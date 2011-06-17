@@ -1,3 +1,9 @@
+pe-puppet-dashboard (1.0.4-1puppet8) lenny; urgency=low
+
+  * [1ec0547] Updating lintian overrides for dashboard.
+
+ -- Michael Stahnke <stahnma@puppetlabs.com>  Fri, 17 Jun 2011 13:55:22 -0700
+
 pe-puppet-dashboard (1.0.4-1puppet7) lenny; urgency=low
 
   * [0a6f854] Fix path in mkdir for puppetdashboard.conf
