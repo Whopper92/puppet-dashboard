@@ -1,7 +1,7 @@
 Source: pe-puppet-dashboard
 Section: web
 Priority: optional
-Maintainer: Jacob Helwig <jacob@puppetlabs.com>
+Maintainer: Puppet Labs <info@puppetlabs.com>
 Build-Depends: cdbs, debhelper (>> 7)
 Standards-Version: 3.9.1
 Homepage: http://www.puppetlabs.com
