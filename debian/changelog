@@ -1,3 +1,9 @@
+pe-puppet-dashboard (1.2rc6-1puppet1) lenny; urgency=low
+
+  * Import 1.2rc6
+
+ -- Michael Stahnke <stahnma@puppetlabs.com>  Fri, 17 Jun 2011 13:55:22 -0700
+
 pe-puppet-dashboard (1.0.4-1puppet8) lenny; urgency=low
 
   * [1ec0547] Updating lintian overrides for dashboard.

@@ -1,5 +1,6 @@
 #!/bin/sh -e
 
+DBUSER=puppet-dashboard
 # Move a conffile without triggering a dpkg question
 mv_conffile() {
     local OLDCONFFILE="$1"
@@ -14,28 +15,33 @@ mv_conffile() {
 
 case "$1" in
 configure)
+    # Remove the older user if found or rename it
+    if ! getent passwd pe-puppet-dashboard > /dev/null ; then
+        usermod -l puppet-dashboard pe-puppet-dashboard
+    fi
+
     # Make sure the user exists.
-    if ! getent passwd pe-puppet-dashboard > /dev/null; then
+    if ! getent passwd puppet-dashboard > /dev/null; then
         adduser --system --quiet --home /opt/puppet/share/puppet-dashboard --no-create-home \
-            --shell /bin/false --group --gecos "Puppet Dashboard" pe-puppet-dashboard
+            --shell /bin/false --group --gecos "PE Puppet Dashboard" puppet-dashboard
     fi
 
     # Check the validity of the puppet-dashboard user and group
-    if [ "`id -u pe-puppet-dashboard`" -eq 0 ]; then
-        echo "The pe-puppet-dashboard user must not have uid 0 (root).
+    if [ "`id -u puppet-dashboard`" -eq 0 ]; then
+        echo "The puppet-dashboard user must not have uid 0 (root).
 Please fix this and reinstall this package." >&2
         exit 1
     fi
-    if [ "`id -g pe-puppet-dashboard`" -eq 0 ]; then
-        echo "The pe-puppet-dashboard system user must not have root as its primary group.
+    if [ "`id -g puppet-dashboard`" -eq 0 ]; then
+        echo "The puppet-dashboard system user must not have root as its primary group.
 Please fix this and reinstall this package." >&2
         exit 1
     fi
 
     # Setup proper permissions
-    chown -R pe-puppet-dashboard:pe-puppet-dashboard /var/log/pe-puppet-dashboard
-    chown -R pe-puppet-dashboard:pe-puppet-dashboard /var/opt/pe-puppet-dashboard
-    chown pe-puppet-dashboard:pe-puppet-dashboard /opt/puppet/share/puppet-dashboard/config/environment.rb
+    chown -R puppet-dashboard:puppet-dashboard /var/log/pe-puppet-dashboard
+    chown -R puppet-dashboard:puppet-dashboard /var/opt/pe-puppet-dashboard
+    chown puppet-dashboard:puppet-dashboard /opt/puppet/share/puppet-dashboard/config/environment.rb
 
 
     if [ ! -d /etc/puppetlabs/puppet-dashboard ]; then
@@ -46,7 +52,11 @@ Please fix this and reinstall this package." >&2
         mv_conffile "/opt/puppet/share/puppet-dashboard/config/database.yml" "/etc/puppetlabs/puppet-dashboard/database.yml"
     fi
 
-    chown -R pe-puppet-dashboard:pe-puppet-dashboard /etc/puppetlabs/puppet-dashboard
+    if [ -f /opt/puppet/share/puppet-dashboard/config/settings.yml ] && [ ! -e /etc/puppetlabs/puppet-dashboard/settings.yml ]; then
+        mv_conffile "/opt/puppet/share/puppet-dashboard/config/settings.yml" "/etc/puppetlabs/puppet-dashboard/settings.yml"
+    fi
+
+    chown -R puppet-dashboard:puppet-dashboard /etc/puppetlabs/puppet-dashboard
     chmod -R o-rwx /etc/puppetlabs/puppet-dashboard
     find /etc/puppetlabs/puppet-dashboard -type f -exec chmod a-x {} \;
 
