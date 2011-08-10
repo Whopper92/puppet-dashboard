@@ -20,6 +20,10 @@ configure)
         usermod -l puppet-dashboard pe-puppet-dashboard
     fi
 
+    if getent group pe-puppet-dashboard > /dev/null ; then
+        groupmod -n puppet-dashboard pe-puppet-dashboard
+    fi
+
     # Make sure the user exists.
     if ! getent passwd puppet-dashboard > /dev/null; then
         adduser --system --quiet --home /opt/puppet/share/puppet-dashboard --no-create-home \
