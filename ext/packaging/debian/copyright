@@ -10,12 +10,12 @@ Copyright:
 
     Copyright (C) 2009-2010  Puppet Labs
 
-License: GPL-2
+License: Apache-2.0
     On Debian systems, the complete text of the GNU General
-    Public License can be found in '/usr/share/common-licenses/GPL-2'.
+    Public License can be found in '/usr/share/common-licenses/Apache-2.0'.
 
-The Debian packaging is copyright 2010 James Turnbull <james@lovedthanlost.net>,
-and is licensed under the GPL-2, see `/usr/share/common-licenses/GPL-2'.
+The Debian packaging is copyright 2011 Michael Stahnke <stahnma@puppetlabs.com>,
+and is licensed under the Apache-2.0, see `/usr/share/common-licenses/Apache-2.0'.
 
 Files: vendor/plugins/inherited_resources
 Copyright: (c) 2009 Jose Valim
@@ -38,18 +38,6 @@ License: MIT
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
 
-Files: vendor/plugins/jrails
-Copyright: (c) 2008 Aaron Eisenberger
-License: MIT
-
-Files: vendor/plugins/object_daddy
-Copyright: (c) 2007, Flawed Logic, OG Consulting, Rick Bradley, Yossef Mendelssohn
-License: MIT
-
-Files: vendor/plugins/resources_controller
-Copyright: (c) 2008 Ian White
-License: MIT
-
 Files: vendor/plugins/rspec-rails
 Copyright: (c) 2005-2009 The RSpec Development Team
 License: MIT
@@ -62,16 +50,8 @@ Files: vendor/plugins/will_paginate
 Copyright: (c) 2007 PJ Hyett and Mislav Marohnic
 License: MIT
 
-Files: vendor/plugins/authlogic
-Copyright: (c) 2009 Ben Johnson of Binary Logic
-License: MIT
-
 Files: vendor/gems/haml
 Copyright: (c) 2006-2009 Hampton Catlin, Nathan Weizenbaum, and Chris Eppstein
-License: MIT
-
-Files: vendor/gems/mislav-will_paginate
-Copyright: (c) 2007 PJ Hyett and Mislav Marohnić
 License: MIT
 
 Files: vendor/gems/mocha
@@ -86,18 +66,14 @@ Files: vendor/gems/rspec
 Copyright: (c) 2005-2009 The RSpec Development Team
 License: MIT
 
-Files: vendor/gems/stringex
-Copyright: (c) 2008 Lucky Sneaks
-License: MIT
-
 Files: vendor/gems/thoughtbot-shoulda
 Copyright: (c) 2007, Tammer Saleh, Thoughtbot, Inc
-License: MIT
-
-Files: vendor/gems/has_scope
-Copyright: (c) 2009 Plataforma Tecnologia
 License: MIT
 
 Files: vendor/rails
 Copyright: (c) 2004-2009 David Heinemeier Hansson <david@loudthinking.com>
 License: MIT
+
+Files: public/images/icons
+Copyright: (c) 2005 Mark James <mjames@gmail.com>
+License: Creative Commons Attribution 3.0 License

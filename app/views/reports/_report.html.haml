@@ -1,40 +1,24 @@
 .header
   %h2
-    %span.status{:class => report.status}
-      = report_status_icon(report)
-      Report:
-      = report.time
-    - if report.node
-      %span.alt for
-      = link_to report.node.name, report.node
-  %ul.actions
-    %li= link_to 'Destroy', @report, :confirm => 'Are you sure?', :method => :delete, :class => "delete button"
+    = render 'report_title', :report => report
+  - unless SETTINGS.enable_read_only_mode
+    %ul.actions
+      - Registry.each_callback :report, :actions do |thing|
+        = thing.call self, report
+      %li= link_to 'Delete', report, :confirm => 'Are you sure?', :method => :delete, :class => "delete button"
 
 .item
-  .section
-    %h3 Log
-    .section
-      %table.inspector
-        %thead
-          %tr
-            %th Level
-            %th Message
-            %th Source
-            %th Time
-        %tbody
-          - if report.logs.present?
-            = render :partial => 'puppet/util/logs/log', :collection => puppet_log_sorter(report.logs.compact)
-          - else
-            %td.empty{:colspan => 4}
-              = describe_no_matches_for 'log messages', :report
-  .section
-    %h3 Metrics
-    - if report.metrics.present?
-      - report.metrics.sort_by{|name, metric| name}.each do |name, metric|
-        - if metric.values.present?
-          .section
-            %h4= name.titleize
-            %table.inspector
-              = render metric
-    - else
-      &mdash; No metrics in this report &mdash;
+  - user_facing = Hash.new { |hash, key| hash[key] = key[/[a-z].*/i].titleize }
+  - user_facing.update '800_resource_statuses' => 'Events'
+  - panels = []
+  %ul#report-tabs.tabbed
+    - Registry.each_callback :core, :report_view_widgets do |name, widget|
+      - panels << capture_haml do
+        %div.panel(id="#{user_facing[name].downcase}")
+          = widget.call self, report
+      %li(id="#{user_facing[name].downcase}-tab")
+        %a= user_facing[name]
+  = panels
+
+- Registry.each_callback :report, :tail do |thing|
+  = thing.call self, report

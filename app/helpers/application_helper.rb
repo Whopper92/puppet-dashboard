@@ -44,16 +44,16 @@ module ApplicationHelper
 
       collection_hash_values = collection.map{ |c|
         [
-          key.respond_to?(:call) ? 
-            key.call(c) : 
+          key.respond_to?(:call) ?
+            key.call(c) :
             link_to_if(options[:link], c.send(key), c),
-          value ? 
-            (value.respond_to?(:call) ? value.call(c) : c.send(value)) : 
+          value ?
+            (value.respond_to?(:call) ? value.call(c) : c.send(value)) :
             false
         ]
-      }.flatten
+      }
 
-      collection = Hash[*collection_hash_values]
+      collection = collection_hash_values
     end
 
     key ||= :key; value ||= :value
@@ -94,30 +94,52 @@ module ApplicationHelper
   def header_for(form)
     content_tag(:h2, :class => "header") do
       (form.object.new_record? ? "Add" : "Edit") + " " + form.object.class.name.titleize.downcase
-		end
+    end
   end
 
   include WillPaginate::ViewHelpers
 
   # Return HTML with pagination controls for displaying an ActiveRecord +scope+.
-  def pagination_for(scope, more_link=nil)
-    if scope.respond_to?(:total_pages) && scope.total_pages > 1
-      content_tag(:div, :class => 'actionbar') do
+  def pagination_for(scope, more_link=nil, count=nil)
+    count_str = count ? "#{count} " : ""
+    content_tag(:div, :class => 'actionbar') do
+      pagination = if scope.respond_to?(:total_pages) && scope.total_pages > 1
         [
-          more_link ? content_tag(:span, :class => 'pagination') { link_to('More &raquo;', more_link) } : will_paginate(scope),
-          tag(:br, :class=> 'clear')
+        more_link ? content_tag(:span, :class => 'pagination') { link_to("#{count_str}More &raquo;", more_link) } : will_paginate(scope),
         ]
+      else
+        []
+      end
+      pagination_sizer = more_link ? [] : [
+        pagination_sizer_for(scope),
+        tag(:br, :class=> 'clear')
+      ]
+      pagination + pagination_sizer
+    end
+  end
+
+  def pagination_sizer_for(scope)
+    return nil if ! scope.first
+    return nil if ! scope.first.class.respond_to? :per_page
+    content_tag(:div, :class => 'pagination') do
+      [content_tag(:span){ "Per page: " }] +
+      [scope.first.class.per_page, 100, :all].map do |n|
+        if (params[:per_page] || scope.per_page.to_s) == n.to_s
+          content_tag(:span, :class => "current"){ n }
+        else
+          link_to(n, params.merge({:per_page => n}))
+        end
       end
     end
   end
 
-  def icon(name)
-    image_tag "icons/#{name}.png"
+  def icon(name, options={})
+    image_tag "icons/#{name}.png", options
   end
 
   # Return status icon for the +node+.
   def node_status_icon(node)
-    report_status_icon(node.last_report)
+    report_status_icon(node.last_apply_report)
   end
 
   # Return status icon for the +report+.
@@ -154,6 +176,10 @@ module ApplicationHelper
         40
       end
     end
+  end
+
+  def wrap_on_slashes(str)
+    (h str).gsub("/","/<wbr />")
   end
 
   # Return HTML describing the search if one is present in params[:q].
@@ -217,6 +243,7 @@ module ApplicationHelper
   #     });
   #   });
   def tokenize_input_class(*inputs)
+    inputs.compact!
     javascript = "jQuery(document).ready(function(J) {\n"
     inputs.each do |input|
       javascript << "  J('#{input[:class]}').tokenInput('#{input[:data_source]}', {\n"
@@ -225,5 +252,21 @@ module ApplicationHelper
     end
     javascript << "});"
     return javascript
+  end
+
+  # Asynchronously loads data from a URL and injects it into the element specified. The
+  # element must be in the DOM before the query, or it may fail. Element should be
+  # specified in CSS selector form (eg. "#element" for the object with id="element").
+  def load_asynchronously(element, url)
+    javascript = "jQuery.get('#{url}', function(data) { jQuery('#{element}').html(data) })"
+  end
+
+  def generate_unique_id
+    @unique_id_counter ||= 0
+    @unique_id_counter += 1
+  end
+
+  def add_body_class(klass)
+    (@body_classes ||= []).push(klass).uniq!
   end
 end

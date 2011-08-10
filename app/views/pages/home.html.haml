@@ -1,39 +1,20 @@
+- tab_statuses = Node.possible_derived_statuses.unshift("all")
 #sidebar= render 'shared/node_manager_sidebar'
 #main
-  .header
-    %h2 Dashboard
   .item
-    - if @currently_failing_nodes.present?
-      .section.error
-        %h3 Node failures
-        %p
-          = pluralize @currently_failing_nodes.length, 'node'
-          are currently reporting failures:
-          = succeed '.' do
-            = truncated_node_sentence(@currently_failing_nodes, :more_link => nodes_path(:current => true, :successful => false))
-
-    - if @no_longer_reporting_nodes.present?
-      .section.warning
-        %h3 Nodes no longer reporting
-        %p
-          = pluralize @no_longer_reporting_nodes.length, 'node'
-          = @no_longer_reporting_nodes.length == 1 ? 'has' : 'have'
-          not reported in the last #{time_ago_in_words Node::NO_LONGER_REPORTING_CUTOFF.ago}:
-          = succeed '.' do
-            = truncated_node_sentence(@no_longer_reporting_nodes, :more_link => no_longer_reporting_nodes_path)
-
-    - if @unreported_nodes.present?
-      .section.warning
-        %h3 Nodes never reported
-        %p
-          = pluralize @unreported_nodes.length, 'node'
-          = @unreported_nodes.length == 1 ? 'has' : 'have'
-          never reported:
-          = succeed '.' do
-            = truncated_node_sentence(@unreported_nodes, :more_link => unreported_nodes_path)
-
+    - if @all_nodes.empty?
+      .section
+        %p There are no nodes known by Dashboard.
     .section
-      = render 'statuses/run_failure', :statuses => @statuses
-    .section
-      %h3 Recently-reported nodes
-      = render 'nodes/nodes', :nodes => @nodes, :more_link => nodes_path(:page => 2)
+      = render 'statuses/run_failure', :nodes => @all_nodes
+  .item
+    %ul#home-tabs.tabbed
+      - tab_statuses.each do |tab_status|
+        %li(id="#{tab_status}-tab")
+          %a= tab_status.humanize
+    - tab_statuses.each do |tab_status|
+      %div.panel(id=tab_status)
+        = render 'nodes/nodes',
+          :nodes           => instance_variable_get("@#{tab_status}_nodes"),
+          :selected_status => tab_status,
+          :more_link       => url_for(:controller => "nodes", :action => tab_status == "all" ? :index : tab_status, :page => 2)

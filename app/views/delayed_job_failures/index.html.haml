@@ -1,0 +1,41 @@
+#sidebar= render 'shared/node_manager_sidebar'
+#main
+  .header
+    %h2
+      Background Task Failures
+
+  .item
+    %ul.tabbed
+      %li{ :class => active_if( controller.action_name == 'index' )}
+        = link_to "#{DelayedJobFailure.unread.count > 0 ? DelayedJobFailure.unread.count : ''} New failed tasks", '/delayed_job_failures'
+      %li{ :class => active_if( controller.action_name == 'read' )}
+        = link_to 'Previously-read failures', '/delayed_job_failures/read'
+
+    %div.panel.tabbed
+      - if @delayed_job_failures.count > 0
+        - if @read == false
+          #mark-as-read
+            - form_tag request.url, :method => :post do
+              %button{:name => :mark_all_read} Mark all as read
+              (and we'll stop notifying you about them)
+        %dl
+          - index = 0
+          - @delayed_job_failures.each do |e|
+            - index += 1
+            %dt
+              %strong= e.summary
+              at
+              %em= e.created_at
+            %dd
+              = e.details
+              - if e.backtrace
+                %div.expandable-list
+                  = link_to h('Backtrace'), {}, {:class => 'expandable-link collapsed-link', :id => "expand-#{index}"}
+                  %div.expandable.collapsed{:id => "expandable-#{index}"}
+                    %table
+                      - e.backtrace.each do |bt|
+                        %tr
+                          %td= bt
+        = pagination_for @delayed_job_failures
+      - else
+        %p No unread task failures.

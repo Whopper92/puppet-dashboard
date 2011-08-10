@@ -2,31 +2,38 @@ class NodesController < InheritedResources::Base
   belongs_to :node_class, :optional => true
   belongs_to :node_group, :optional => true
   respond_to :html, :yaml, :json
+  before_filter :raise_if_enable_read_only_mode, :only => [:new, :edit, :create, :update, :destroy]
 
   layout lambda {|c| c.request.xhr? ? false : 'application' }
 
   def index
-    scoped_index
+    raise NodeClassificationDisabledError.new if !SETTINGS.use_external_node_classification and request.format == :yaml
+    scoped_index :unhidden
   end
 
-  def successful
-    redirect_to nodes_path(:current => true.to_s, :successful => true.to_s)
+  [:unreported, :failed, :unresponsive, :pending, :changed, :unchanged].each do |action|
+    define_method(action) {scoped_index :unhidden, action}
   end
 
-  def failed
-    redirect_to nodes_path(:current => true.to_s, :successful => false.to_s)
+  def hidden
+    scoped_index :hidden
   end
 
-  def unreported
-    scoped_index :unreported
-  end
-
-  def no_longer_reporting
-    scoped_index :no_longer_reporting
+  def search
+    index! do |format|
+      format.html {
+        @search_params = params['search_params'] || []
+        @search_params.delete_if {|param| param.values.any?(&:blank?)}
+        nodes = @search_params.empty? ? [] : Node.find_from_inventory_search(@search_params)
+        set_collection_ivar(nodes)
+        render :inventory_search
+      }
+    end
   end
 
   def show
     begin
+      raise NodeClassificationDisabledError.new if !SETTINGS.use_external_node_classification and request.format == :yaml
       show!
     rescue ActiveRecord::RecordNotFound => e
       raise e unless request.format == :yaml
@@ -35,6 +42,49 @@ class NodesController < InheritedResources::Base
     rescue ParameterConflictError => e
       raise e unless request.format == :yaml
       render :text => "Node \"#{resource.name}\" has conflicting parameter(s): #{resource.errors.on(:parameters).to_a.to_sentence}", :content_type => 'text/plain', :status => 500
+    rescue NodeClassificationDisabledError => e
+      render :text => "Node classification has been disabled", :content_type => 'text/plain', :status => 403
+    end
+  end
+
+  def edit
+    edit! do |format|
+      format.html {
+        if SETTINGS.use_external_node_classification
+          @class_data = {:class => '#node_class_ids', :data_source => node_classes_path(:format => :json), :objects => @node.node_classes}
+        end
+        @group_data = {:class => '#node_group_ids', :data_source => node_groups_path(:format => :json),  :objects => @node.node_groups}
+      }
+    end
+  end
+
+  def hide
+    respond_to do |format|
+      resource.hidden = true
+      resource.save!
+
+      format.html { redirect_to node_path(resource) }
+    end
+  end
+
+  def unhide
+    respond_to do |format|
+      resource.hidden = false
+      resource.save!
+
+      format.html { redirect_to node_path(resource) }
+    end
+  end
+
+  def facts
+    respond_to do |format|
+      format.html {
+        begin
+          render :partial => 'nodes/facts', :locals => {:node => resource, :facts => resource.facts}
+        rescue => e
+          render :text => "Could not retrieve facts from inventory service: #{e.message}"
+        end
+      }
     end
   end
 
@@ -42,38 +92,42 @@ class NodesController < InheritedResources::Base
   # requirements
   def reports
     @node = resource
-    @reports = @node.reports
+    @reports = params[:kind] == "inspect" ? @node.reports.inspections : @node.reports.applies
     respond_to do |format|
       format.html { @reports = paginate_scope(@reports); render 'reports/index' }
-      format.yaml { render :text => @reports.to_yaml, :content_type => 'application/x-yaml' }
-      format.json { render :json => @reports.to_json }
     end
   end
 
   protected
 
   def resource
-    get_resource_ivar || set_resource_ivar(end_of_association_chain.find_by_name!(params[:id]))
+    get_resource_ivar || set_resource_ivar(end_of_association_chain.find_by_id_or_name!(params[:id]))
   end
 
   # Render the index using the +scope_name+ (e.g. :successful for Node.successful).
-  def scoped_index(scope_name=nil)
+  def scoped_index(*scope_names)
     index! do |format|
       scope = end_of_association_chain
       if params[:q]
         scope = scope.search(params[:q])
       end
-      if scope_name
+      scope_names.each do |scope_name|
         scope = scope.send(scope_name)
-      end
-      if params[:current].present? or params[:successful].present?
-        scope = scope.by_currentness_and_successfulness(params[:current] == "true", params[:successful] == "true")
       end
       set_collection_ivar(scope.with_last_report.by_report_date)
 
       format.html { render :index }
       format.yaml { render :text => collection.to_yaml, :content_type => 'application/x-yaml' }
-      format.json { render :json => collection.to_json }
+      format.csv do
+        response["Content-Type"] = 'text/comma-separated-values;'
+        response["Content-Disposition"] = "attachment;filename=#{scope_names.join("-")}-nodes.csv;"
+
+        render :text => proc { |response,output|
+          collection.to_csv do |line|
+            output.write(line)
+          end
+        }, :layout => false
+      end
     end
   end
 end
