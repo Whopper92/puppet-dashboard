@@ -98,6 +98,43 @@ $rounding_radius: 0.35em;
     }
 }
 
+@mixin node_summary_row($color) {
+  a {
+    color : $color;
+  }
+  .percent {
+    a {
+      background-color : $color;
+    }
+  }
+  &.hover,
+  &.active,
+  &:hover {
+    background-color : $color;
+    a {
+      color : #fff;
+      text-decoration : none;
+    }
+    .percent {
+      a {
+        background-color : #fff;
+      }
+    }
+  }
+}
+
+@mixin clearfix {
+  display : block;
+  &:after {
+    content : "\0020";
+    display : block;
+    height : 0;
+    clear : both;
+    visibility : hidden;
+    overflow : hidden;
+  }
+}
+
 body {
   background: #e8eef0;
   color: #444;
@@ -138,7 +175,6 @@ body {
 
     a#logo {
       background: transparent url('../images/dashboard_logo.png') no-repeat top center;
-      text-indent: -9000px;
       display: inline-block;
       height: 23px;
       width: 155px;
@@ -440,6 +476,11 @@ body {
     clear: both;
   }
 
+  .wrap {
+    word-wrap: break-word;
+    word-break: break-all;
+  }
+
   .nowrap {
     white-space: nowrap;
   }
@@ -467,37 +508,37 @@ body {
     margin-bottom: 1.5em;
 
     &.error {
-      @include icony_section('failure', 
-        #433, #FCC, 
-        #433, #FDD, 
+      @include icony_section('failed',
+        #433, #FCC,
+        #433, #FDD,
         #FCC);
     }
 
     &.failure {
-      @include icony_section('failure', 
-        #433, #FCC, 
-        #433, #FDD, 
+      @include icony_section('failed',
+        #433, #FCC,
+        #433, #FDD,
         #FCC);
     }
 
     &.warning {
-      @include icony_section('warning', 
-        #444, #DCC, 
-        #433, #EDD, 
+      @include icony_section('warning',
+        #444, #DCC,
+        #433, #EDD,
         #DCC);
     }
 
     &.success {
-      @include icony_section('warning', 
-        #444, #CDC, 
-        #343, #DED, 
+      @include icony_section('warning',
+        #444, #CDC,
+        #343, #DED,
         #CDC);
     }
 
     &.notice {
-      @include icony_section('notice', 
-        #444, #CCC, 
-        #333, #DDD, 
+      @include icony_section('notice',
+        #444, #CCC,
+        #333, #DDD,
         #CCC);
     }
 
@@ -519,9 +560,57 @@ body {
     }
   }
 
-  &.reports_show_action {
+  ul.tabbed {
+    display: none;
+    font: bold 14px Arial;
+    width: 100%;
+    float: left;
+    margin: 0;
+    padding: 0;
+
+    li {
+      @include rounded_top;
+      background: #CCC;
+      list-style: none;
+      float: left;
+      border: solid 1px #CCC;
+      margin-right: 4px;
+      color: white;
+
+      a {
+        color : #fff;
+        padding : 4px 1em;
+        display : block;
+        cursor: pointer;
+      }
+      a:hover {
+        text-decoration : underline;
+      }
+      &.active {
+        border-bottom-color: white;
+        background-color: white;
+        color: #2C66A8;
+        a {
+          color: #2C66A8;
+        }
+      }
+    }
+  }
+  ul.tabbed {
+    @include clearfix;
+    display : block;
+  }
+  .panel.tabbed {
+    border: solid 1px #CCC;
+    background-color: white;
+    padding: 1em;
+    margin-top: 25px;
+    margin-bottom: 1em;
+  }
+
+  &.reports_show_action, &.pages_home_action {
     .section {
-      margin-left: 1em;
+      margin: 0;
     }
 
     h4 {
@@ -546,6 +635,80 @@ body {
     }
   }
 
+  .node_summary {
+    padding : 0 .5em;
+    margin: .5em auto;
+    table { // primary and secondary
+      width : 100%;
+      .count {
+        font-weight : bold;
+        padding-left: .3em;
+      }
+      .count,
+      .graph {
+        padding-left : .3em;
+      }
+      .count,
+      .label {
+        padding-top : .2em;
+      }
+    }
+
+    table.primary { // this is marked up as a table, but not rendered that way
+      tr {
+        cursor : pointer;
+        position: relative;
+
+        &.unresponsive { @include node_summary_row( #888 )}
+        &.failed       { @include node_summary_row( #c21 )}
+        &.pending      { @include node_summary_row( #e72 )}
+        &.changed      { @include node_summary_row( #069 )}
+        &.unchanged    { @include node_summary_row( #093 )}
+        &.unreported   { @include node_summary_row( #aaa )}
+        &.all          { @include node_summary_row( #000 )}
+
+        td {
+          font-size : 1.4em;
+          padding-bottom: .5em;
+
+          &.count {
+            text-align: right;
+            padding-right: 0.3em;
+          }
+          &.percent {
+            display: block;
+            position: absolute;
+            left: 0.6em;
+            right: 0.6em;
+            margin-top: 1.3em;
+
+            a {
+              text-indent : -9999px;
+              display : block;
+              height : 3px;
+              clear : left;
+            }
+          }
+        }
+      }
+    }
+    table.secondary {
+      padding-top : .5em;
+      border-top : 1px solid #ccc;
+      margin-top : .5em;
+      tr.active {
+        a {
+          color : #fff;
+        }
+        background-color : #2c66a8;
+      }
+      td {
+        font-size : 1.2em;
+        padding : .2em .3em;
+      }
+    }
+  }
+
   &.pages_release_notes_action {
     .markeddown {
         h2 {
@@ -565,7 +728,7 @@ body {
   ul.token-input-list-facebook {
     width: 100%;
   }
-  
+
   div.token-input-dropdown-facebook {
     &.token-input-dropdown-facebook {
       background-color: #FFFFED;
@@ -574,7 +737,7 @@ body {
 
     ul {
       li {
-        &.token-input-dropdown-item-facebook, 
+        &.token-input-dropdown-item-facebook,
         &.token-input-dropdown-item2-facebook {
           background-color: #FFFFED;
           list-style-type: none;
@@ -583,6 +746,59 @@ body {
         &.token-input-selected-dropdown-item-facebook {
           background-color: #FFFDA4;
           color: #000;
+        }
+      }
+    }
+  }
+
+  &.delayed_job_failures_controller {
+    dl {
+      dt {
+        color : #999;
+        strong {
+          color : #000;
+        }
+        em {
+          color : #000;
+          font-weight : normal;
+        }
+      }
+      dd {
+        padding-bottom : .3em;
+        border-bottom : 1px solid #eee;
+        margin-bottom : .3em;
+      }
+    }
+  }
+  #mark-as-read {
+    margin-bottom : 1em;
+  }
+  .delayed-job {
+    padding-bottom : .5em;
+    p {
+      padding : .5em 1em 0 1em;
+      margin : 0;
+      em,
+      a {
+        padding-left : 20px;
+        background-color : transparent;
+        background-repeat : no-repeat;
+        background-position : 0% 50%;
+        margin-bottom : .5em;
+      }
+      &.ok {
+        em {
+          background : transparent url( /images/icons/delayed-job-ok.png ) no-repeat 0% 50%;
+        }
+      }
+      &.failure {
+        a {
+          background-image : url( /images/icons/delayed-job-failure.png );
+        }
+      }
+      &.warning {
+        em {
+          background-image : url( /images/icons/delayed-job-warning.png );
         }
       }
     }

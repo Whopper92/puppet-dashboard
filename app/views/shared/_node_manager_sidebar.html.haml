@@ -1,24 +1,58 @@
+- add_body_class 'with-sidebar'
+
+.group.delayed-job
+  %h3= link_to "Background Tasks", "/delayed_job_failures"
+
+  - if DelayedJobFailure.unread.count > 0
+    %p.failure
+      =link_to "#{ pluralize DelayedJobFailure.unread.count, 'new failed task' }", "/delayed_job_failures"
+  - if Delayed::Job.count > 0
+    %p.warning
+      %em= "#{ pluralize Delayed::Job.count, 'pending task' }"
+  - if Delayed::Job.count == 0 and DelayedJobFailure.unread.count == 0
+    %p.ok
+      %em All systems go
+
 .group
   %h3{:class => active_if(controller_name == "nodes" && action_name == "index")}= link_to "Nodes", nodes_path
-  %span.count= Node.count
-  %ul
-    - for currentness in [true, false]
-      - for successfulness in [true, false]
-        %li{:class => active_if(controller_name == 'nodes' && params[:current] && (params[:current] == "true") == currentness && params[:successful] && (params[:successful] == "true") == successfulness && parent.nil?)}
-          - label = Node.label_for_currentness_and_successfulness(currentness, successfulness)
-          = link_to label, nodes_path(:current => currentness.to_s, :successful => successfulness.to_s)
-          - count = Node.count_by_currentness_and_successfulness(currentness, successfulness)
-          %span.count{:class => counter_class(count, currentness && !successfulness)}= count
-    %li{:class => active_if(controller_name == 'nodes' && action_name == 'unreported' && parent.nil?)}
-      = link_to "Never reported", unreported_nodes_path
-      - count = Node.count_unreported
-      %span.count{:class => counter_class(count, true)}= count
-    %li{:class => active_if(controller_name == 'nodes' && action_name == 'no_longer_reporting' && parent.nil?)}
-      = link_to "Not currently reporting", no_longer_reporting_nodes_path
-      - count = Node.count_no_longer_reporting
-      %span.count{:class => counter_class(count, true)}= count
-  .footer.actionbar
-    = link_to "Add node", new_node_path, :class => 'button'
+  -# %span.count= Node.unhidden.count
+  %p.help
+    %a{ :href => 'http://links.puppetlabs.com/dashboard1.2_node_summary_help', :target => '_blank' }
+      Help
+  .node_summary
+    %table.primary
+      -# This conditional is ugly, but it saves us from duplicating the markup
+      - Node.possible_derived_statuses.push( 'unreported', 'all' ).each do |status|
+        - if( status == 'all' )
+          - node_count = Node.unhidden.count
+          - nodes_path = '/nodes'
+          - action_status = 'index'
+        - else
+          - node_count = Node.send(status).unhidden.count
+          - nodes_path = eval("#{status}_nodes_path")
+          - action_status = status
+        - percent = percentage(node_count, Node.unhidden.count).to_i
 
-- for type in [NodeClass, NodeGroup]
-  = render "shared/node_manager_sidebar_for_type", :type => type
+        %tr{:class => "#{status} #{active_if(controller_name == 'nodes' && action_name == action_status && parent.nil?)}"}
+          %td.count
+            = link_to node_count, nodes_path
+          %td.label
+            = link_to status.capitalize, nodes_path
+          %td.percent
+            = link_to "#{percent}<em>%</em>", nodes_path, {:style => "width: #{percent}%"}
+
+    - if Node.hidden.count > 0
+      %table.secondary
+        %tr{:class => active_if(controller_name == 'nodes' && action_name == 'hidden' && parent.nil?)}
+          %td.count
+            = link_to Node.hidden.count, hidden_nodes_path
+          %td.label
+            = link_to "Hidden", hidden_nodes_path
+
+  .footer.actionbar
+    - unless SETTINGS.enable_read_only_mode
+      = link_to "Add node", new_node_path, :class => 'button'
+
+= render "shared/node_manager_sidebar_for_type", :type => NodeGroup
+- if SETTINGS.use_external_node_classification
+  = render "shared/node_manager_sidebar_for_type", :type => NodeClass

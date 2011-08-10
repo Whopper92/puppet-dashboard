@@ -23,163 +23,128 @@ describe Node do
       later = 1.week.ago.to_date
       sooner = Date.today
 
-      @always_suceeding = Node.generate!(:name => 'always_suceeding').tap do |node|
-        Report.generate_for(node, later, true)
-        Report.generate_for(node, sooner, true)
+      @ever_changed = Node.generate!(:name => 'ever_changed').tap do |node|
+        Report.generate!(:host => node.name, :time => later, :status => 'changed')
+        Report.generate!(:host => node.name, :time => sooner, :status => 'changed')
         node.reload
       end
 
-      @currently_succeeding = Node.generate!(:name => 'currently_succeeding').tap do |node|
-        Report.generate_for(node, later, false)
-        Report.generate_for(node, sooner, true)
+      @ever_unchanged = Node.generate!(:name => 'ever_unchanged').tap do |node|
+        Report.generate!(:host => node.name, :time => later, :status => 'unchanged')
+        Report.generate!(:host => node.name, :time => sooner, :status => 'unchanged')
         node.reload
       end
 
-      @always_failing = Node.generate!(:name => 'always_failing').tap do |node|
-        Report.generate_for(node, later, false)
-        Report.generate_for(node, sooner, false)
+      @just_changed = Node.generate!(:name => 'just_changed').tap do |node|
+        Report.generate!(:host => node.name, :time => later, :status => 'failed')
+        Report.generate!(:host => node.name, :time => sooner, :status => 'changed')
         node.reload
       end
 
-      @currently_failing = Node.generate!(:name => 'currently_failing').tap do |node|
-        Report.generate_for(node, later, true)
-        Report.generate_for(node, sooner, false)
+      @just_unchanged = Node.generate!(:name => 'just_unchanged').tap do |node|
+        Report.generate!(:host => node.name, :time => later, :status => 'failed')
+        Report.generate!(:host => node.name, :time => sooner, :status => 'unchanged')
         node.reload
       end
-    end
 
-    [
-      [true,  true,  %w[always_suceeding currently_succeeding]],
-      [true,  false, %w[always_failing currently_failing]],
-      [false, true,  %w[always_suceeding currently_succeeding currently_failing]],
-      [false, false, %w[currently_succeeding always_failing currently_failing]],
-    ].each do |currentness, successfulness, inclusions|
-      context "when #{currentness ? 'current' : 'ever'} and #{successfulness ? 'successful' : 'failed'}" do
-        let(:currentness) { currentness }
-        let(:successfulness) { successfulness }
-        let(:inclusions) { inclusions }
-
-        describe "::by_currentness_and_successfulness" do
-          it "should exactly match: #{inclusions.join(', ')}" do
-            Node.by_currentness_and_successfulness(currentness, successfulness).map(&:name).sort.should == inclusions.sort
-          end
-        end
-
-        describe "::count_by_currentness_and_successfulness" do
-          it "should count the expected nodes" do
-            Node.count_by_currentness_and_successfulness(currentness, successfulness).should == inclusions.size
-          end
-        end
+      @ever_failed = Node.generate!(:name => 'ever_failed').tap do |node|
+        Report.generate!(:host => node.name, :time => later, :status => 'failed')
+        Report.generate!(:host => node.name, :time => sooner, :status => 'failed')
+        node.reload
       end
+
+      @just_failed = Node.generate!(:name => 'just_failed').tap do |node|
+        Report.generate!(:host => node.name, :time => later, :status => 'unchanged')
+        Report.generate!(:host => node.name, :time => sooner, :status => 'failed')
+        node.reload
+      end
+
+      @only_inspections = Node.generate!(:name => 'only_inspections').tap do |node|
+        Report.generate!(:host => node.name, :time => later, :kind => 'inspect', :status => "unchanged")
+        node.reload
+      end
+
+      @never_reported = Node.generate!(:name => 'never_reported')
     end
   end
 
-  # describe ".successful" do
-    # include DescribeReports
+  describe "status named_scopes" do
+    it "should find nodes with the appropriate statuses on the latest report" do
+      [:failed, :pending, :changed, :unchanged].each do |node_status|
+        node = Node.create!(:name => node_status.to_s)
+        node.reports.generate!(:status => 'bogus', :time => Time.now - 1)
+        node.reports.generate!(:status => node_status.to_s, :time => Time.now)
 
-    # it "should return all nodes whose latest report was successful" do
-      # report = Report.generate
-      # report.update_attribute(:success, true)
+        node = Node.create!(:name => "#{node_status}-unresponsive")
+        node.reports.generate!(
+          :status => node_status.to_s, 
+          :time => SETTINGS.no_longer_reporting_cutoff.seconds.ago - 1
+        )
+      end
 
-      # Node.successful.should include(report.node)
-    # end
+      Node.pending.map(&:name).should   == ['pending']
+      Node.changed.map(&:name).should   == ['changed']
+      Node.unchanged.map(&:name).should == ['unchanged']
+      Node.failed.map(&:name).should    == ['failed']
 
-    # it "should not return failed nodes" do
-      # successful_report = report_model_from_yaml('success.yml')
-      # successful_report.save!
-      # successful_node = successful_report.node
+      Node.unresponsive.map(&:name).should =~ [
+        'failed-unresponsive',
+        'pending-unresponsive',
+        'changed-unresponsive',
+        'unchanged-unresponsive'
+      ]
+    end
+  end
 
-      # failed_report = report_model_from_yaml('failure.yml')
-      # failed_report.save!
-      # failed_node = failed_report.node
+  describe "::find_from_inventory_search" do
+    before :each do
+      @foo = Node.generate :name => "foo"
+      @bar = Node.generate :name => "bar"
+    end
 
-      # Node.successful.should_not include(failed_report.node)
-    # end
-  # end
+    it "should find the nodes that match the list of names given" do
+      PuppetHttps.stubs(:get).returns('["foo", "bar"]')
+      Node.find_from_inventory_search('').should =~ [@foo, @bar]
+    end
 
-  # describe ".failed" do
-    # include DescribeReports
+    it "should create nodes that don't exist" do
+      PuppetHttps.stubs(:get).returns('["foo", "bar", "baz"]')
+      Node.find_from_inventory_search('').map(&:name).should =~ ['foo', 'bar', 'baz']
+    end
 
-    # it "should return all nodes whose latest report failed" do
-      # report = Report.generate
-      # report.update_attribute(:success, false)
-
-      # Node.failed.should include(report.node)
-    # end
-
-    # it "should not return successful nodes" do
-      # successful_report = report_model_from_yaml('success.yml')
-      # successful_report.save!
-      # successful_node = successful_report.node
-
-      # failed_report = report_model_from_yaml('failure.yml')
-      # failed_report.save!
-      # failed_node = failed_report.node
-
-      # Node.failed.should_not include(successful_report.node)
-    # end
-  # end
+    it "should look-up nodes case-insensitively" do
+      baz = Node.generate :name => "BAZ"
+      PuppetHttps.stubs(:get).returns('["foo", "BAR", "baz"]')
+      Node.find_from_inventory_search('').should =~ [@foo, @bar, baz]
+    end
+  end
 
   describe ".unreported" do
     it "should return all nodes whose latest report was unreported" do
-      node = Node.generate
+      unreported_node = Node.generate
+      reported_node = Node.generate
+      Report.generate!(:host => reported_node.name)
 
-      Node.unreported.should include(node)
+      Node.unreported.should == [unreported_node]
     end
   end
 
-  describe "no_longer_reporting" do
-    it "should return all nodes whose latest report is more than 1 hour ago" do
-      old = node = Node.generate(:reported_at => 2.hours.ago)
-      new = node = Node.generate(:reported_at => 10.minutes.ago)
-
-      Node.no_longer_reporting.should include(old)
-      Node.no_longer_reporting.should_not include(new)
-    end
-  end
-
-  describe '#available_node_classes' do
+  describe "" do
     before :each do
-      @node = Node.new
-      @node_classes = Array.new(3){ NodeClass.generate! }
+      @nodes = {:hidden   => Node.generate!(:hidden => true),
+                :unhidden => Node.generate!(:hidden => false)
+      }
     end
 
-    it "should include all available classes" do
-      @node.available_node_classes.should == @node_classes
-    end
-
-    describe 'when the node has classes' do
-      before { @node.node_classes << @node_classes.first }
-
-      it "should not include the node's classes" do
-        @node.available_node_classes.should_not include(@node_classes.first)
+    [:hidden, :unhidden].each do |hiddenness|
+      describe hiddenness do
+        it "should find all #{hiddenness} nodes" do
+          nodes = Node.send(hiddenness)
+          nodes.length.should == 1
+          nodes.first.should == @nodes[hiddenness]
+        end
       end
-
     end
-  end
-
-  describe '#available_node_groups' do
-    before :each do
-      @node = Node.new
-      @node_groups = Array.new(3){ NodeGroup.generate! }
-    end
-
-    it "should include all available groups" do
-      @node.available_node_groups.should == @node_groups
-    end
-
-    describe 'when the node has groups' do
-      before { @node.node_groups << @node_groups.first }
-
-      it "should not include the node's groups" do
-        @node.available_node_groups.should_not include(@node_groups.first)
-      end
-
-    end
-  end
-
-  it 'should be able to compute a configuration' do
-    Node.new.should respond_to(:configuration)
   end
 
   describe 'when computing a configuration' do
@@ -197,34 +162,12 @@ describe Node do
     end
 
     it "should return the node's compiled parameters in the returned parameters list" do
-      @node.stubs(:compiled_parameters).returns({'a' => 'b', 'c' => 'd'})
-      @node.configuration['parameters'].should == { 'a' => 'b', 'c' => 'd' }  
+      @node.stubs(:compiled_parameters).returns [
+        OpenStruct.new(:name => 'a', :value => 'b', :sources => Set[:foo]),
+        OpenStruct.new(:name => 'c', :value => 'd', :sources => Set[:bar])
+      ]
+      @node.configuration['parameters'].should == { 'a' => 'b', 'c' => 'd' }
     end
-  end
-
-  describe "#inherited_classes" do
-    before :each do
-      @node = Node.generate!
-      @node_group = NodeGroup.generate!
-      @inherited_class = NodeClass.generate!
-      @node_group.node_classes << @inherited_class
-      @node.node_groups << @node_group
-    end
-
-    it "should inherit classes from its groups" do
-      @node.inherited_classes.should include(@inherited_class)
-    end
-  end
-
-  describe "#all_classes" do
-    before :each do
-      @node = Node.generate!
-      @node.stubs(:inherited_classes).returns([:inherited_class])
-      @node.stubs(:node_classes).returns([:local_class])
-    end
-
-    it { @node.all_classes.should include(:inherited_class) }
-    it { @node.all_classes.should include(:local_class) }
   end
 
   describe "#parameters=" do
@@ -256,7 +199,7 @@ describe Node do
 
   describe "handling the node group graph" do
     before :each do
-      @node = Node.generate!
+      @node = Node.generate! :name => "Sample"
 
       @node_group_a = NodeGroup.generate! :name => "A"
       @node_group_b = NodeGroup.generate! :name => "B"
@@ -273,37 +216,25 @@ describe Node do
 
     describe "when a group is included twice" do
       before :each do
-        @node_group_c = NodeGroup.generate!
+        @node_group_c = NodeGroup.generate! :name => "C"
+        @node_group_d = NodeGroup.generate! :name => "D"
+        @node_group_c.node_groups << @node_group_d
         @node_group_a.node_groups << @node_group_c
         @node_group_b.node_groups << @node_group_c
       end
 
-      it "should return the correct graph" do
-        @node.node_group_graph.should == {@node_group_a => {@node_group_c => {}}, @node_group_b => {@node_group_c => {}}}
+      it "should return the correct groups and sources" do
+        @node.node_groups_with_sources.should == {@node_group_a => Set[@node], @node_group_c => Set[@node_group_a,@node_group_b], @node_group_b => Set[@node], @node_group_d => Set[@node_group_c]}
       end
-
-      it "should return the correct list" do
-        @node.node_group_list.should == [@node, @node_group_a, @node_group_c, @node_group_b]
-      end
-    end
-
-    it "should handle cycles gracefully" do
-      NodeGroupEdge.new(:from => @node_group_a, :to => @node_group_b).save(false)
-      NodeGroupEdge.new(:from => @node_group_b, :to => @node_group_a).save(false)
-
-      @node.node_group_graph.should == {
-        @node_group_a => {
-          @node_group_b => {
-            @node_group_a => {} }},
-        @node_group_b => {
-          @node_group_a => {
-            @node_group_b => {} }}}
     end
 
     describe "handling parameters in the graph" do
 
       it "should return the compiled parameters" do
-        @node.compiled_parameters.should == {'foo' => '1', 'bar' => '2'}
+        @node.compiled_parameters.should == [
+          OpenStruct.new(:name => 'foo', :value => '1', :sources => Set[@node_group_a]),
+          OpenStruct.new(:name => 'bar', :value => '2', :sources => Set[@node_group_b])
+        ]
       end
 
       it "should ensure that parameters nearer to the node are retained" do
@@ -311,7 +242,10 @@ describe Node do
         @node_group_a1.parameters << Parameter.create(:key => 'foo', :value => '2')
         @node_group_a.node_groups << @node_group_a1
 
-        @node.compiled_parameters.should == {'foo' => '1', 'bar' => '2'}
+        @node.compiled_parameters.should == [
+          OpenStruct.new(:name => 'foo', :value => '1', :sources => Set[@node_group_a]),
+          OpenStruct.new(:name => 'bar', :value => '2', :sources => Set[@node_group_b])
+        ]
       end
 
       it "should raise an error if there are parameter conflicts among children" do
@@ -344,7 +278,22 @@ describe Node do
       it "should include parameters of the node itself" do
         @node.parameters << Parameter.create(:key => "node_parameter", :value => "exist")
 
-        @node.compiled_parameters["node_parameter"].should == "exist"
+        @node.compiled_parameters.first.name.should == "node_parameter"
+        @node.compiled_parameters.first.value.should == "exist"
+      end
+
+      it "should retain the history of its parameters" do
+        @node_group_c = NodeGroup.generate! :name => "C"
+        @node_group_d = NodeGroup.generate! :name => "D"
+        @node_group_c.parameters << Parameter.generate(:key => 'foo', :value => '3')
+        @node_group_d.parameters << Parameter.generate(:key => 'foo', :value => '4')
+        @node_group_a.node_groups << @node_group_c
+        @node_group_a.node_groups << @node_group_d
+
+        @node.compiled_parameters.should == [
+          OpenStruct.new(:name => 'foo', :value => '1', :sources => Set[@node_group_a]),
+          OpenStruct.new(:name => 'bar', :value => '2', :sources => Set[@node_group_b])
+        ]
       end
     end
   end
@@ -487,7 +436,7 @@ describe Node do
     end
 
     it("should destroy dependent reports") do
-      @report = Report.generate_for(@node)
+      @report = Report.generate!(:host => @node.name)
       @node.destroy
       Report.all.should_not include(@report)
     end
@@ -510,6 +459,115 @@ describe Node do
 
       node_group.nodes.should be_empty
       node_group.node_group_memberships.should be_empty
+    end
+  end
+
+  describe "facts" do
+    before :each do
+      @node = Node.generate!(:name => 'gonaddynode')
+      @sample_pson = '{"name":"foo","timestamp":"Fri Oct 29 10:33:53 -0700 2010","expiration":"Fri Oct 29 11:03:53 -0700 2010","values":{"a":"1","b":"2"}}'
+      @sample_pson_without_timestamp = '{"name":"foo","expiration":"Fri Oct 29 11:03:53 -0700 2010","values":{"a":"1","b":"2"}}'
+      @sample_pson_with_malformed_timestamp = '{"name":"foo","expiration":"Fri Oct 29 11:03:53 -0700 2010","values":{"a":"1","b":"2","--- !ruby/sym _timestamp":"Sat Oct 30 10:33:53 -0700 2010"}}'
+      SETTINGS.stubs(:inventory_server).returns('fred')
+      SETTINGS.stubs(:inventory_port).returns(12345)
+    end
+
+    it "should return facts from an external REST call" do
+      PuppetHttps.stubs(:get).with("https://fred:12345/production/facts/gonaddynode", 'pson').returns(
+        @sample_pson)
+      timestamp = Time.parse("Fri Oct 29 10:33:53 -0700 2010")
+      @node.facts.should == { :timestamp => timestamp, :values => { "a" => "1", "b" => "2" }}
+    end
+
+    it "should properly CGI escape the node name in the REST call" do
+      @node.name = '&/='
+      PuppetHttps.expects(:get).with("https://fred:12345/production/facts/%26%2F%3D", 'pson').returns(
+        @sample_pson)
+      @node.facts
+    end
+
+    it "should return facts from an external REST call when timestamp is missing" do
+      PuppetHttps.stubs(:get).with("https://fred:12345/production/facts/gonaddynode", 'pson').returns(
+        @sample_pson_without_timestamp)
+      @node.facts.should == {:timestamp => nil, :values => {"a" => "1", "b" => "2"}}
+    end
+
+    # The malformed timestamp can come back with Puppet 2.6.7 when both
+    # storedconfigs and the inventory service are enabled.  See #6835
+    it "should return facts from an external REST call when timestamp is malformed" do
+      PuppetHttps.stubs(:get).with("https://fred:12345/production/facts/gonaddynode", 'pson').returns(
+        @sample_pson_with_malformed_timestamp)
+      timestamp = Time.parse("Sat Oct 30 10:33:53 -0700 2010")
+      @node.facts.should == {:timestamp => timestamp, :values => {"a" => "1", "b" => "2"}}
+    end
+  end
+
+  describe '.to_csv' do
+    before :each do
+      @node = Node.generate!
+      @report = Report.generate!(:host => @node.name)
+      @node.reload
+
+      @custom_node_properties = [:name, :status, :resource_count, :pending_count, :failed_count, :compliant_count]
+      @custom_resource_properties = [:resource_type, :title, :evaluation_time, :file, :line, :time, :change_count, :out_of_sync_count, :skipped, :failed]
+    end
+
+    let(:node_values) { @custom_node_properties.map {|prop| @node.send(prop)} }
+
+    it 'should export one row per resource status with both node, and resource data' do
+      pending_resource = Factory(:pending_resource, :title => 'pending', :report => @report)
+      successful_resource = Factory(:successful_resource, :title => 'successful', :report => @report)
+      failed_resource = Factory(:failed_resource, :title => 'failed', :report => @report)
+
+      csv_lines = Node.find(:all).to_csv.split("\n")
+      csv_lines.first.should == (@custom_node_properties + @custom_resource_properties).join(',')
+      csv_lines[1..-1].should =~ [pending_resource, failed_resource, successful_resource].map do |res|
+        line = node_values + @custom_resource_properties.map { |field| res.send(field) }
+        line.join(',')
+      end
+    end
+
+    it 'should export nulls for the resource status values when there are no resource statuses' do
+      Node.find(:all).to_csv.split("\n").should == [
+        (@custom_node_properties + @custom_resource_properties).join(','),
+        (node_values + ([nil] * @custom_resource_properties.count)).join(',')
+      ]
+    end
+  end
+
+  describe 'self.resource_status_totals' do
+    before :each do
+      @pending_node = Factory(:pending_node)
+      @unchanged_node = Factory(:unchanged_node)
+
+      Metric.create!(:report => @pending_node.last_apply_report, :category => "resources", :name => "pending", :value => 27)
+      Metric.create!(:report => @pending_node.last_apply_report, :category => "resources", :name => "unchanged", :value => 48)
+      Metric.create!(:report => @pending_node.last_apply_report, :category => "resources", :name => "changed", :value => 4)
+      Metric.create!(:report => @unchanged_node.last_apply_report, :category => "resources", :name => "unchanged", :value => 25)
+    end
+    it 'should calculate the correct totals for default scope' do
+      Node.resource_status_totals("pending").should == 27
+      Node.resource_status_totals("unchanged").should == 73
+      Node.resource_status_totals("changed").should == 4
+    end
+
+    it 'should calculate the correct totals for specific scopes' do
+      Node.resource_status_totals("unchanged","pending").should == 48
+      Node.resource_status_totals("unchanged","unchanged").should == 25
+    end
+ 
+    it 'should raise an error if passed a scope that does not exist' do
+      expect { Node.resource_status_totals("unchanged","not_a_scope") }.to raise_error(NoMethodError, /undefined method/)
+    end
+
+    it 'should default to all scope if nil is passed as scope' do
+      Node.resource_status_totals("pending", nil).should == 27
+      Node.resource_status_totals("unchanged", nil).should == 73
+      Node.resource_status_totals("changed", nil).should == 4
+    end
+
+    it 'should raise an error if passed an invalid status' do
+      expect { Node.resource_status_totals("not_a_status") }.to raise_error(ArgumentError, /No such status/)
     end
   end
 end

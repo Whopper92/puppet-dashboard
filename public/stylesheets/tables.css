@@ -70,6 +70,17 @@ table tbody td.status.failure {
   color: red;
 }
 
+table tbody tr.status.failure td {
+  background-color: #ffb7b7;
+}
+table tbody tr:nth-child(even).status.failure td {
+  background-color: #ffc7c7;
+}
+
+table tbody tr.status.changed {
+  background-color: #FF9;
+}
+
 table.inspector td.key,
 table.inspector td.value {
   vertical-align: top;
@@ -99,8 +110,64 @@ body table.inspector tbody tr td.total {
   font-weight: bold;
 }
 
+table th.empty {
+  text-align: left;
+  background: transparent !important;
+  padding-left: 1em !important;
+}
+
 table td.empty {
   text-align: center;
   color: #999;
   background: #F8F8F8;
+}
+/* this isn't even really a table anymore */
+.expandable-list {
+  padding : 1em;
+  background : #fff;
+  width : auto;
+}
+.expandable-list .even {
+  background: #F5F5F5;
+}
+.expandable-list .expandable {
+  margin-bottom : 1em;
+}
+.expandable-list .collapsed {
+  display: none;
+}
+.expandable-list .expandable-link.collapsed-link:before {
+  content: url('../../images/icons/bullet_toggle_plus.png');
+}
+.expandable-list .expandable-link:before {
+  content: url('../../images/icons/bullet_toggle_minus.png');
+}
+
+.expandable-list .non-expandable-bullet:before {
+  content: url('../../images/icons/bullet_green.png');
+}
+.inspect-report .expandable-list .non-expandable-bullet:before {
+  content: url('../../images/icons/bullet_red.png');
+}
+
+.expandable-list .expandable-link, .expandable-list .non-expandable-bullet {
+  vertical-align: bottom;
+}
+.expandable-list-item {
+  display: inline-block;
+  vertical-align: bottom;
+}
+.expandable-list table th {
+  font-weight : bold;
+}
+.expandable-list table td,
+.expandable-list table th {
+  padding : .25em .5em .15em;
+}
+.content {
+  padding : 1em;
+  background : #fff;
+}
+.content h4 {
+  margin-top : 1em;
 }

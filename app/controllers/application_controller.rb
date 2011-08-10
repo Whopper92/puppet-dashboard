@@ -4,42 +4,34 @@
 class ApplicationController < ActionController::Base
   include InheritedResources::DSL
   include PaginateScopeHelper
+  include StringHelper
 
   helper :all # include all helpers, all the time
-  protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
   # Scrub sensitive parameters from your log
   filter_parameter_logging :password
 
-  helper_method :current_user_session, :current_user
+  before_filter :set_timezone
 
   private
 
-  def current_user_session
-    return @current_user_session if defined?(@current_user_session)
-    @current_user_session = UserSession.find
+  def raise_if_enable_read_only_mode
+    raise ReadOnlyEnabledError.new if SETTINGS.enable_read_only_mode
   end
 
-  def current_user
-    return @current_user if defined?(@current_user)
-    @current_user = current_user_session && current_user_session.user
+  def raise_unless_using_external_node_classification
+    raise NodeClassificationDisabledError.new unless SETTINGS.use_external_node_classification
   end
 
-  def require_user
-    unless current_user
-      store_location
-      flash[:error] = "You must be logged in to access this page"
-      redirect_to new_user_session_url
-      return false
-    end
+  rescue_from NodeClassificationDisabledError do |e|
+    render :text => "Node classification has been disabled", :content_type => 'text/plain', :status => 403
   end
 
-  def require_no_user
-    if current_user
-      store_location
-      flash[:error] = "You must be logged out to access this page"
-      redirect_to account_url
-      return false
+  def set_timezone
+    if SETTINGS.time_zone
+      time_zone_obj = ActiveSupport::TimeZone.new(SETTINGS.time_zone)
+      raise Exception.new("Invalid timezone #{SETTINGS.time_zone.inspect}") unless time_zone_obj
+      Time.zone = time_zone_obj
     end
   end
 

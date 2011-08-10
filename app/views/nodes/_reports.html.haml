@@ -1,0 +1,17 @@
+- reports = node.reports.applies.limit(30).order('time ASC')
+- unless reports.empty?
+  .section
+    = render 'statuses/run_failure', :node => node
+
+  .section
+    = render 'statuses/run_time', :reports => reports.reverse
+
+  .section
+    %h3
+      Recent reports
+      %span.count== (#{node.reports.applies.count})
+      - reports_limit = 10
+    = render 'reports/reports_table', 
+      :reports  => paginate_scope(node.reports.applies, :per_page => reports_limit),
+      :node     => node,
+      :tfoot    => reports.count > reports_limit ? 'nodes/reports_table_tfoot' : nil

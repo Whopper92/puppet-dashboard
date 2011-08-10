@@ -1,14 +1,13 @@
 class PagesController < ApplicationController
   def home
-    @statuses = Status.by_interval(:limit => 30)
+    @all_nodes = Node.unhidden.by_report_date
 
-    @currently_failing_nodes = Node.by_currentness_and_successfulness(true, false)
-    @unreported_nodes = Node.unreported
-    @no_longer_reporting_nodes = Node.no_longer_reporting
-
-    @nodes = Node.by_report_date.all(:limit => 10)
+    @unreported_nodes         = @all_nodes.unreported
+    @unresponsive_nodes       = @all_nodes.unresponsive
+    @failed_nodes             = @all_nodes.failed
+    @pending_nodes            = @all_nodes.pending
+    @changed_nodes            = @all_nodes.changed
+    @unchanged_nodes          = @all_nodes.unchanged
   end
 
-  def release_notes
-  end
 end

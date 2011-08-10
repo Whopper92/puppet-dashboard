@@ -11,16 +11,19 @@
       var relative_url_root = '#{ActionController::Base.relative_url_root}';
       $.noConflict();
 
-    = stylesheet_link_tag 'reset', 'layout', 'forms', 'tables', 'jquery.ui.autocomplete.css', 'typography', 'links', 'token-input-facebook', 'tipsy', 'application', :cache => 'all'
-    = javascript_include_tag 'prototype', 'jrails', 'jquery-ui.min', 'jquery.tokeninput', 'excanvas.min', 'raphael-min', 'grafico.min', 'jquery.form', 'jquery.placeholders', 'jquery.ui.autocomplete', 'jquery.ui.autocomplete.ext', 'jquery.tipsy', 'search', 'application', :cache => 'all'
+    = stylesheet_link_tag 'reset', 'layout', 'forms', 'tables', 'jquery.ui.custom', 'jquery.ui.combobox', 'typography', 'links', 'token-input-facebook', 'tipsy', 'application', 'colorbox', 'help', :cache => 'all'
+    = javascript_include_tag 'prototype', 'jquery-ui.min', 'jquery.tokeninput', 'excanvas.min', 'raphael-min', 'grafico.min', 'jquery.form', 'jquery.placeholders', 'jquery.ui.combobox', 'jquery.colorbox.js', 'jquery.tipsy', 'search', 'application', :cache => 'all'
+    - Registry.each_callback :core, :head_extensions do |widget|
+      = widget.call self
 
-  - body_classes = [ "#{controller.controller_name}_controller", "#{controller.controller_name}_#{controller.action_name}_action" ]
-  - body_classes << "#{controller.controller_name}_form_action" if %w[new create edit update].include?(controller.action_name)
-  %body{:class => body_classes}
+  - add_body_class "#{controller.controller_name}_controller"
+  - add_body_class "#{controller.controller_name}_#{controller.action_name}_action"
+  - add_body_class "#{controller.controller_name}_form_action" if %w[new create edit update].include?(controller.action_name)
+  - add_body_class "no-sidebar" unless @body_classes.include?('with-sidebar')
+  %body{:class => @body_classes}
     #wrap
       #header
         = render 'shared/global_nav'
-        = render 'shared/secondary_nav'
       #content
         - [:success, :warning, :failure].each do |type|
           - if message = flash[type]
