@@ -16,7 +16,7 @@ mv_conffile() {
 case "$1" in
 configure)
     # Remove the older user if found or rename it
-    if ! getent passwd pe-puppet-dashboard > /dev/null ; then
+    if getent passwd pe-puppet-dashboard > /dev/null ; then
         usermod -l puppet-dashboard pe-puppet-dashboard
     fi
 
