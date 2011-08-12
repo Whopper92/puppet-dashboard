@@ -584,4 +584,4 @@ pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard
 pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/views/statuses/
 pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/views/statuses/_run_failure.html.haml_spec.rb
 pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spool/
-
+pe-puppet-dashboard binary: init.d-script-does-not-implement-required-option etc/init.d/pe-puppet-dashboard-workers force-reload
