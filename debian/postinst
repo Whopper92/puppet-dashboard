@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh -e -x 
 
 DBUSER=puppet-dashboard
 # Move a conffile without triggering a dpkg question
