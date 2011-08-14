@@ -1,5 +1,4 @@
 #!/bin/sh -e
-set -x
 
 DBUSER=puppet-dashboard
 # Move a conffile without triggering a dpkg question
@@ -17,7 +16,6 @@ mv_conffile() {
 case "$1" in
 configure)
     # Remove the older user if found or rename it
-    echo "Dollar 1 is $1"
     if getent passwd pe-puppet-dashboard > /dev/null ; then
         usermod -l puppet-dashboard pe-puppet-dashboard
     fi
