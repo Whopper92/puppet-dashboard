@@ -46,7 +46,7 @@ Please fix this and reinstall this package." >&2
     touch /var/log/pe-puppet-dashboard/production.log
     chown -R puppet-dashboard:puppet-dashboard /var/log/pe-puppet-dashboard
     chown -R puppet-dashboard:puppet-dashboard /var/opt/pe-puppet-dashboard
-    chown puppet-dashboard:puppet-dashboard /opt/puppet/share/puppet-dashboard/config/environment.rb
+    chown -R puppet-dashboard:puppet-dashboard /opt/puppet/share/puppet-dashboard
 
 
     if [ ! -d /etc/puppetlabs/puppet-dashboard ]; then
