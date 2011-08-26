@@ -1,3 +1,9 @@
+pe-puppet-dashboard (1.2.0-1puppet2) lenny; urgency=low
+
+  * Import 1.2.0
+
+ -- Michael Stahnke <stahnma@puppetlabs.com>  Fri, 26 Aug 2011 15:24:22 -0700
+
 pe-puppet-dashboard (1.2rc6-1puppet1) lenny; urgency=low
 
   * Import 1.2rc6
