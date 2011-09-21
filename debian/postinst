@@ -68,7 +68,7 @@ Please fix this and reinstall this package." >&2
 
     # Dashboard enc fix (#9387 & #9224)
     chown root:root /etc/puppetlabs/puppet-dashboard
-    chmod 755 /etc/pupppetlabs/puppet-dashboard
+    chmod 755 /etc/puppetlabs/puppet-dashboard
 
     if [ ! -h /opt/puppet/share/puppet-dashboard/config/database.yml ]; then
         ln -s /etc/puppetlabs/puppet-dashboard/database.yml /opt/puppet/share/puppet-dashboard/config/database.yml
