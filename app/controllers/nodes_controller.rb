@@ -65,6 +65,8 @@ class NodesController < InheritedResources::Base
   end
 
   def edit
+    # Make the node name readonly
+    @readonly_name = "readonly"
     edit! do |format|
       format.html {
         set_group_and_class_autocomplete_data_sources(@node)
@@ -140,6 +142,7 @@ class NodesController < InheritedResources::Base
       set_collection_ivar(scope.with_last_report.by_report_date)
 
       format.html { render :index }
+      format.json { render :text => collection.to_json, :content_type => 'application/json' }
       format.yaml { render :text => collection.to_yaml, :content_type => 'application/x-yaml' }
       format.csv do
         response["Content-Type"] = 'text/comma-separated-values;'

@@ -55,7 +55,7 @@ describe NodeGroup do
 
     describe "by id" do
       it "should not allow a group to include itself" do
-        @node_group_a.node_group_ids = @node_group_a.id
+        @node_group_a.assigned_node_group_ids = @node_group_a.id
         @node_group_a.save
 
         @node_group_a.should_not be_valid
@@ -65,7 +65,7 @@ describe NodeGroup do
 
       it "should not allow a cycle to be formed" do
         @node_group_b.node_groups << @node_group_a
-        @node_group_a.node_group_ids = @node_group_b.id
+        @node_group_a.assigned_node_group_ids = @node_group_b.id
         @node_group_a.save
 
         @node_group_a.should_not be_valid
@@ -78,7 +78,7 @@ describe NodeGroup do
         @node_group_d = NodeGroup.generate!
         @node_group_a.node_groups << @node_group_c
         @node_group_b.node_groups << @node_group_c
-        @node_group_d.node_group_ids = [@node_group_a.id, @node_group_b.id]
+        @node_group_d.assigned_node_group_ids = [@node_group_a.id, @node_group_b.id]
 
         @node_group_d.should be_valid
         @node_group_d.errors.should be_empty
@@ -88,7 +88,7 @@ describe NodeGroup do
 
     describe "by name" do
       it "should not allow a group to include itself" do
-        @node_group_a.node_group_names = @node_group_a.name
+        @node_group_a.assigned_node_group_names = @node_group_a.name
         @node_group_a.save
 
         @node_group_a.should_not be_valid
@@ -98,7 +98,7 @@ describe NodeGroup do
 
       it "should not allow a cycle to be formed" do
         @node_group_b.node_groups << @node_group_a
-        @node_group_a.node_group_names = @node_group_b.name
+        @node_group_a.assigned_node_group_names = @node_group_b.name
         @node_group_a.save
 
         @node_group_a.should_not be_valid
@@ -111,7 +111,7 @@ describe NodeGroup do
         @node_group_d = NodeGroup.generate!
         @node_group_a.node_groups << @node_group_c
         @node_group_b.node_groups << @node_group_c
-        @node_group_d.node_group_names = [@node_group_a.name, @node_group_b.name]
+        @node_group_d.assigned_node_group_names = [@node_group_a.name, @node_group_b.name]
 
         @node_group_d.should be_valid
         @node_group_d.errors.should be_empty
@@ -130,7 +130,7 @@ describe NodeGroup do
     describe "by id" do
       describe "with a single id" do
         it "should set the class" do
-          @node_group.node_class_ids = @node_class_a.id
+          @node_group.assigned_node_class_ids = @node_class_a.id
 
           @node_group.should be_valid
           @node_group.errors.should be_empty
@@ -141,7 +141,7 @@ describe NodeGroup do
 
       describe "with multiple ids" do
         it "should set the classes" do
-          @node_group.node_class_ids = [@node_class_a.id, @node_class_b.id]
+          @node_group.assigned_node_class_ids = [@node_class_a.id, @node_class_b.id]
 
           @node_group.should be_valid
           @node_group.errors.should be_empty
@@ -154,7 +154,7 @@ describe NodeGroup do
     describe "by name" do
       describe "with a single name" do
         it "should set the class" do
-          @node_group.node_class_names = @node_class_a.name
+          @node_group.assigned_node_class_names = @node_class_a.name
 
           @node_group.should be_valid
           @node_group.errors.should be_empty
@@ -165,7 +165,7 @@ describe NodeGroup do
 
       describe "with multiple names" do
         it "should set the classes" do
-          @node_group.node_class_names = [@node_class_a.name, @node_class_b.name]
+          @node_group.assigned_node_class_names = [@node_class_a.name, @node_class_b.name]
 
           @node_group.should be_valid
           @node_group.errors.should be_empty
@@ -177,8 +177,8 @@ describe NodeGroup do
 
     describe "by name, and id" do
       it "should add all specified classes" do
-        @node_group.node_class_names = @node_class_a.name
-        @node_group.node_class_ids   = @node_class_b.id
+        @node_group.assigned_node_class_names = @node_class_a.name
+        @node_group.assigned_node_class_ids   = @node_class_b.id
 
         @node_group.should be_valid
         @node_group.errors.should be_empty
@@ -229,6 +229,63 @@ describe NodeGroup do
         group.size.should == 2
         group.should include(@groups.first, @groups.last)
       end
+    end
+  end
+
+  describe "assigning before validation" do
+    let(:node_groups)  { Array.new(2) { |i| NodeGroup.generate! :name => "group#{i}" } }
+    let(:node_classes) { Array.new(2) { |i| NodeClass.generate! :name => "class#{i}" } }
+    let(:nodes)        { Array.new(2) { |i| Node.generate!      :name => "node#{i}"  } }
+
+    it "should assign groups, classes and nodes by id" do
+      new_group = NodeGroup.new(
+        :assigned_node_group_ids => node_groups.map(&:id),
+        :assigned_node_class_ids => node_classes.map(&:id),
+        :assigned_node_ids       => nodes.map(&:id)
+      )
+      new_group.assign_node_groups
+      new_group.assign_node_classes
+      new_group.assign_nodes
+
+      new_group.node_groups.should  == node_groups
+      new_group.node_classes.should == node_classes
+      new_group.nodes.should        == nodes
+    end
+
+    it "should assign groups, classes and nodes by name" do
+      new_group = NodeGroup.new(
+        :assigned_node_group_names => node_groups.map(&:name),
+        :assigned_node_class_names => node_classes.map(&:name),
+        :assigned_node_names       => nodes.map(&:name)
+      )
+      new_group.assign_node_groups
+      new_group.assign_node_classes
+      new_group.assign_nodes
+
+      new_group.node_groups.should  == node_groups
+      new_group.node_classes.should == node_classes
+      new_group.nodes.should        == nodes
+    end
+
+    it "should add assignment errors to the object" do
+      new_group = NodeGroup.new(
+        :assigned_node_group_ids => ['cow'],
+        :assigned_node_class_ids => ['dog'],
+        :assigned_node_ids       => ['pig']
+      )
+      new_group.assign_node_groups
+      new_group.assign_node_classes
+      new_group.assign_nodes
+
+      new_group.node_groups.should  be_empty
+      new_group.node_classes.should be_empty
+      new_group.nodes.should        be_empty
+
+      new_group.errors.full_messages.should =~ [
+        "Couldn't find NodeGroup with ID=cow",
+        "Couldn't find NodeClass with ID=dog",
+        "Couldn't find Node with ID=pig"
+      ]
     end
   end
 end

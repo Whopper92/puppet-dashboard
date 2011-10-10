@@ -15,6 +15,7 @@ describe Node do
     it { should have_db_column(:name).of_type(:string) }
     it { should validate_presence_of(:name) }
     it { should validate_uniqueness_of(:name) }
+    it { should have_readonly_attribute(:name) }
 
   end
 
@@ -311,7 +312,7 @@ describe Node do
 
     describe "via node_class_ids" do
       it "should be able to assign a single class" do
-        @node.node_class_ids = @classes.first.id
+        @node.assigned_node_class_ids = @classes.first.id
 
         @node.should be_valid
         @node.errors.should be_empty
@@ -320,7 +321,7 @@ describe Node do
       end
 
       it "should be able to assign multiple classes" do
-        @node.node_class_ids = [@classes.first.id, @classes.last.id]
+        @node.assigned_node_class_ids = [@classes.first.id, @classes.last.id]
 
         @node.should be_valid
         @node.errors.should be_empty
@@ -331,7 +332,7 @@ describe Node do
 
     describe "via node_class_names" do
       it "should be able to assign a single class" do
-        @node.node_class_names = @classes.first.name
+        @node.assigned_node_class_names = @classes.first.name
 
         @node.should be_valid
         @node.errors.should be_empty
@@ -340,7 +341,7 @@ describe Node do
       end
 
       it "should be able to assign multiple classes" do
-        @node.node_class_names = [@classes.first.name, @classes.last.name]
+        @node.assigned_node_class_names = [@classes.first.name, @classes.last.name]
 
         @node.should be_valid
         @node.errors.should be_empty
@@ -351,8 +352,8 @@ describe Node do
 
     describe "via node_class_ids, and node_class_names" do
       it "should assign all specified classes" do
-        @node.node_class_names = @classes.first.name
-        @node.node_class_ids   = @classes.last.id
+        @node.assigned_node_class_names = @classes.first.name
+        @node.assigned_node_class_ids   = @classes.last.id
 
         @node.should be_valid
         @node.errors.should be_empty
@@ -375,7 +376,7 @@ describe Node do
 
     describe "via node_group_ids" do
       it "should be able to assign a single group" do
-        @node.node_group_ids = @groups.first.id
+        @node.assigned_node_group_ids = @groups.first.id
 
         @node.should be_valid
         @node.errors.should be_empty
@@ -384,7 +385,7 @@ describe Node do
       end
 
       it "should be able to assign multiple groups" do
-        @node.node_group_ids = [@groups.first.id, @groups.last.id]
+        @node.assigned_node_group_ids = [@groups.first.id, @groups.last.id]
 
         @node.should be_valid
         @node.errors.should be_empty
@@ -395,7 +396,7 @@ describe Node do
 
     describe "via node_group_names" do
       it "should be able to assign a single group" do
-        @node.node_group_names = @groups.first.name
+        @node.assigned_node_group_names = @groups.first.name
 
         @node.should be_valid
         @node.errors.should be_empty
@@ -404,7 +405,7 @@ describe Node do
       end
 
       it "should be able to assign multiple groups" do
-        @node.node_group_names = [@groups.first.name, @groups.last.name]
+        @node.assigned_node_group_names = [@groups.first.name, @groups.last.name]
 
         @node.should be_valid
         @node.errors.should be_empty
@@ -419,8 +420,8 @@ describe Node do
       end
 
       it "should assign all specified groups" do
-        @node.node_group_names = @groups.first.name
-        @node.node_group_ids   = @groups.last.id
+        @node.assigned_node_group_names = @groups.first.name
+        @node.assigned_node_group_ids   = @groups.last.id
 
         @node.should be_valid
         @node.errors.should be_empty
