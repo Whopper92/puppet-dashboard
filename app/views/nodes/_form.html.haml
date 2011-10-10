@@ -1,4 +1,4 @@
-= focus :node_name
+= focus (@readonly_name) ? :node_description : :node_name
 
 = header_for(form)
 
@@ -7,7 +7,11 @@
 
   .element
     = form.label :node, "Node"
-    = form.text_field :name, :placeholder => "Enter the node name here"
+    - if @readonly_name
+      %p
+        = @node.name
+    - else
+      = form.text_field :name, :placeholder => "Enter the node name here"
 
   .element.textarea
     = form.label :description
@@ -27,12 +31,14 @@
             %td{:colspan => 2}
               = link_to_function("Add parameter", :class => "add button") { |page|  page.insert_html :bottom, 'parameters', :partial => 'parameters/parameter_input', :object => form.object.parameters.build }
 
-    .element.node_classes
-      = label_tag 'Classes'
-      = text_field_tag 'node[node_class_ids][]', '', :id => 'node_class_ids'
+    = render :partial => 'shared/tokenized_text_box',
+      :locals => { :model => 'node_class',
+        :title => 'Classes',
+        :source => 'node' }
 
-  .element.node_groups
-    = label_tag 'Groups'
-    = text_field_tag 'node[node_group_ids][]', '', :id => 'node_group_ids'
+  = render :partial => 'shared/tokenized_text_box',
+    :locals => {:model => 'node_group',
+      :title => 'Groups',
+      :source => 'node'}
 
   %script#tokenizer{:type => "text/javascript"}= tokenize_input_class(@class_data, @group_data)

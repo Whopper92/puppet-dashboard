@@ -28,19 +28,23 @@ body {
         float: left;
         margin-right: 0.8em; }
     body #header ul.navigation li {
-      display: block;
-      float: left;
-      margin-right: 1em; }
+      list-style-position: outside;
+      padding-left: 0.3em;
+      margin-left: 1.0em;
+      margin-right: 1em;
+      float: left; }
       body #header ul.navigation li.active > a, body #header ul.navigation li.active > a:hover {
         font-weight: bold; }
-    body #header a#logo {
-      background: transparent url("../images/dashboard_logo.png") no-repeat top center;
+      body #header ul.navigation li a {
+        vertical-align: middle; }
+    body #header li:first-child {
+      list-style-type: none; }
+    body #header #logo a {
+      background-position: top center;
       display: inline-block;
-      height: 23px;
-      width: 155px;
       position: relative;
       top: 1px; }
-      body #header a#logo:hover {
+      body #header #logo a:hover {
         background-position: bottom center; }
   body #footer p {
     clear: both;
@@ -271,8 +275,7 @@ body {
     border-radius: 0 0 0.35em 0.35em;
     background: #FFF;
     padding: 1em;
-    margin-bottom: 1em;
-    overflow: hidden; }
+    margin-bottom: 1em; }
     body .item:last-child {
       padding-bottom: 0;
       margin-bottom: 0; }
