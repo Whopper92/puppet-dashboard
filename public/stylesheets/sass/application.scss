@@ -161,23 +161,31 @@ body {
 
       &.navigation {
         li {
-          display: block;
-          float: left;
+          list-style-position: outside;
+          padding-left: 0.3em;
+          margin-left: 1.0em;
           margin-right: 1em;
+          float: left;
 
           &.active > a,
           &.active > a:hover {
             font-weight: bold;
           }
+
+          a {
+            vertical-align: middle;
+          }
         }
       }
     }
 
-    a#logo {
-      background: transparent url('../images/dashboard_logo.png') no-repeat top center;
+    li:first-child {
+      list-style-type: none;
+    }
+
+    #logo a {
+      background-position: top center;
       display: inline-block;
-      height: 23px;
-      width: 155px;
       position: relative;
       top: 1px;
 
@@ -490,7 +498,6 @@ body {
     background: #FFF;
     padding: 1em;
     margin-bottom: 1em;
-    overflow: hidden;
 
     &:last-child {
         padding-bottom: 0;
