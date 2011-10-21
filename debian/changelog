@@ -1,3 +1,9 @@
+pe-puppet-dashboard (1.2.2-1puppet2) lenny; urgency=low
+
+  * Add view patch for zero node view
+
+ -- Michael Stahnke <stahnma@puppetlabs.com>  Fri, 21 Oct 2011 11:56:56 -0700
+
 pe-puppet-dashboard (1.2.2-1puppet1) lenny; urgency=low
 
   * Rebase to 1.2.2
