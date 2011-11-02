@@ -34,7 +34,8 @@ binary-install/pe-puppet-dashboard::
 	mkdir -p $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_etc)/httpd/conf.d
 	touch $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_etc)/httpd/conf.d/puppetdashboard.conf
 	# Copy example auth files
-	cp $(CURDIR)/debian/puppetconsole_auth.* $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_etc)/httpd/conf.d/
+	mkdir -p $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_etc)/httpd/auth.d
+	cp $(CURDIR)/debian/puppetconsole_auth.* $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_etc)/httpd/auth.d/
 	mkdir -p  $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/spool
 	# Clean up the "extra" files
 	rm $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/config/database.yml.example
