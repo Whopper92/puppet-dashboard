@@ -1,3 +1,9 @@
+pe-puppet-dashboard (1.2.2-1puppet6) lenny; urgency=low
+
+  * Rename console to console_passwd
+
+ -- Michael Stahnke <stahnma@puppetlabs.com>  Fri, 04 Nov 2011 11:18:17 -0700
+
 pe-puppet-dashboard (1.2.2-1puppet5) lenny; urgency=low
 
   * Rename console file to console_passwd 
