@@ -1,8 +1,14 @@
+pe-puppet-dashboard (1.2.2-1puppet5) lenny; urgency=low
+
+  * Rename console file to console_passwd 
+
+ -- Michael Stahnke <stahnma@deb-builder.puppetlabs.lan>  Fri, 04 Nov 2011 10:39:50 -0700
+
 pe-puppet-dashboard (1.2.2-1puppet4) lenny; urgency=low
 
   * Put zero node patch back in
 
- -- Michael Stahnke <stahnma@puppetlabs.com>  Thu, 03 Nov 2011 12:36:26 -0700
+ -- Michael Stahnke <stahnma@deb-builder.puppetlabs.lan>  Fri, 04 Nov 2011 10:39:17 -0700
 
 pe-puppet-dashboard (1.2.2-1puppet3) lenny; urgency=low
 
