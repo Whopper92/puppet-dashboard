@@ -2,6 +2,7 @@
 
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/rules/buildcore.mk
+include /usr/share/cdbs/1/rules/dpatch.mk
 
 pe_prefix = opt/puppet
 pe_etc = etc/puppetlabs
