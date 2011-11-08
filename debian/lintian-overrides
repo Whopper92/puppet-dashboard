@@ -584,3 +584,4 @@ pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard
 pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spool/
 pe-puppet-dashboard binary: init.d-script-does-not-implement-required-option etc/init.d/pe-puppet-dashboard-workers force-reload
 pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/*
+pe-puppet-dashboard binary: bad-permissions-for-etc-cron.d-script etc/cron.d/default-add-all-nodes 0777 != 0644
