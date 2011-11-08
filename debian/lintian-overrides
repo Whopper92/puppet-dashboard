@@ -345,8 +345,6 @@ dir-or-file-in-opt opt/puppet/share/puppet-dashboard/VERSION
 embedded-javascript-library opt/puppet/share/puppet-dashboard/vendor/plugins/jrails/javascripts/jquery.js
 embedded-javascript-library opt/puppet/share/puppet-dashboard/vendor/rails/actionpack/test/fixtures/public/javascripts/prototype.js
 embedded-javascript-library opt/puppet/share/puppet-dashboard/vendor/rails/railties/html/javascripts/prototype.js
-wrong-path-for-interpreter ./opt/puppet/share/puppet-dashboard/bin/external_node (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
-ruby-script-but-no-ruby-dep ./opt/puppet/share/puppet-dashboard/bin/external_node
 wrong-path-for-interpreter ./opt/puppet/share/puppet-dashboard/script/about (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
 ruby-script-but-no-ruby-dep ./opt/puppet/share/puppet-dashboard/script/about
 wrong-path-for-interpreter ./opt/puppet/share/puppet-dashboard/script/autospec (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
