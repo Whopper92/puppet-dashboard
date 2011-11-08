@@ -1,3 +1,9 @@
+pe-puppet-dashboard (1.2.2-1puppet10) lenny; urgency=low
+
+  * Remove bin/external_node from dashboard package for PE
+
+ -- Michael Stahnke <stahnma@puppetlabs.com>  Mon, 07 Nov 2011 16:52:28 -0800
+
 pe-puppet-dashboard (1.2.2-1puppet9) lenny; urgency=low
 
   * Updates rules to utilize dpatch
