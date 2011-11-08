@@ -52,7 +52,7 @@ binary-install/pe-puppet-dashboard::
 	find $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/spec -type f -exec chmod a-x {} \;
 	# Fixup shebang lines
 	bash $(CURDIR)/debian/fixshebang.sh ruby$(ruby_ver) \
-	    $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/script \
+	    $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/script
 	bash $(CURDIR)/debian/rmshebang.sh \
 	    $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/lib \
 	    $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/app \
