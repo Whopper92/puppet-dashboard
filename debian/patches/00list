@@ -1,2 +1,3 @@
 0001-10198-fixes-display-issue-when-no-nodes-in-group.patch
 0001-10543-Rake-task-to-add-all-nodes-to-a-group.dpatch
+navigation_items_should_be_selectable.dpatch
