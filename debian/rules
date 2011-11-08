@@ -15,7 +15,6 @@ binary-install/pe-puppet-dashboard::
 	mkdir -p $(CURDIR)/debian/$(cdbs_curpkg)/var/log/pe-puppet-dashboard
 	dh_installinit --name=pe-puppet-dashboard-workers
 	cp -r app \
-	    bin \
 	    config \
 	    db \
 	    ext \
@@ -54,7 +53,6 @@ binary-install/pe-puppet-dashboard::
 	# Fixup shebang lines
 	bash $(CURDIR)/debian/fixshebang.sh ruby$(ruby_ver) \
 	    $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/script \
-	    $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/bin
 	bash $(CURDIR)/debian/rmshebang.sh \
 	    $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/lib \
 	    $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/app \
