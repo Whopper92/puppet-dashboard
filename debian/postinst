@@ -74,8 +74,5 @@ Please fix this and reinstall this package." >&2
         ln -s /etc/puppetlabs/puppet-dashboard/database.yml /opt/puppet/share/puppet-dashboard/config/database.yml
     fi
 
-    # Install cron job for adding nodes to default group
-    ln -s /opt/puppet/share/puppet-dashboard/script/default-add-all-nodes /etc/cron.d
-
 esac
 #DEBHELPER#
