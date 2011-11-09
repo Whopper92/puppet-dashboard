@@ -3,4 +3,3 @@ var/opt/pe-puppet-dashboard/tmp              opt/puppet/share/puppet-dashboard/t
 var/opt/pe-puppet-dashboard/public           opt/puppet/share/puppet-dashboard/public
 etc/puppetlabs/puppet-dashboard/database.yml opt/puppet/share/puppet-dashboard/config/database.yml
 etc/puppetlabs/puppet-dashboard/settings.yml opt/puppet/share/puppet-dashboard/config/settings.yml
-opt/puppet/share/puppet-dashboard/script/default-add-all-nodes etc/cron.d/default-add-all-nodes

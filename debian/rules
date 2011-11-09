@@ -58,4 +58,3 @@ binary-install/pe-puppet-dashboard::
 	    $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/app \
 	    $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/spec \
 	    $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/vendor
-	mkdir -p $(CURDIR)/debian/$(cdbs_curpkg)/etc/cron.d
