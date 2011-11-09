@@ -1,3 +1,9 @@
+pe-puppet-dashboard (1.2.2-1puppet16) lenny; urgency=low
+
+  * (#10577) Remove warning on pe-puppet-dashboard-workers
+
+ -- Michael Stahnke <stahnma@puppetlabs.com>  Wed, 09 Nov 2011 10:30:23 -0800
+
 pe-puppet-dashboard (1.2.2-1puppet15) lenny; urgency=low
 
   * remove link attempt in postinst
