@@ -1,3 +1,9 @@
+pe-puppet-dashboard (1.2.2-1puppet15) lenny; urgency=low
+
+  * remove link attempt in postinst
+
+ -- Michael Stahnke <stahnma@puppetlabs.com>  Tue, 08 Nov 2011 16:24:38 -0800
+
 pe-puppet-dashboard (1.2.2-1puppet14) lenny; urgency=low
 
   * Simpler implementation for cron job
