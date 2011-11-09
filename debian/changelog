@@ -1,3 +1,9 @@
+pe-puppet-dashboard (1.2.2-1puppet14) lenny; urgency=low
+
+  * Simpler implementation for cron job
+
+ -- Michael Stahnke <stahnma@puppetlabs.com>  Tue, 08 Nov 2011 16:06:47 -0800
+
 pe-puppet-dashboard (1.2.2-1puppet13) lenny; urgency=low
 
   * Remove leading slash
