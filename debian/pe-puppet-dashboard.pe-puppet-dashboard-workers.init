@@ -31,7 +31,6 @@ DASHBOARD_PORT=${DASHBOARD_PORT:-3000}
 
 check_dashboard_enabled_option() {
     if [ ! "$START" = "yes" ]; then
-        log_warning_msg "Not starting PE Puppet Dashboard Workers, disabled via /etc/default/${name}"
         return 1
     else
         return 0
