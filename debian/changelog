@@ -1,168 +1,168 @@
-pe-puppet-dashboard (1.2.2-1puppet16) lenny; urgency=low
+pe-puppet-dashboard (1.2.2-1puppet16) lenny lucid squeeze; urgency=low
 
   * (#10577) Remove warning on pe-puppet-dashboard-workers
 
  -- Michael Stahnke <stahnma@puppetlabs.com>  Wed, 09 Nov 2011 10:30:23 -0800
 
-pe-puppet-dashboard (1.2.2-1puppet15) lenny; urgency=low
+pe-puppet-dashboard (1.2.2-1puppet15) lenny lucid squeeze; urgency=low
 
   * remove link attempt in postinst
 
  -- Michael Stahnke <stahnma@puppetlabs.com>  Tue, 08 Nov 2011 16:24:38 -0800
 
-pe-puppet-dashboard (1.2.2-1puppet14) lenny; urgency=low
+pe-puppet-dashboard (1.2.2-1puppet14) lenny lucid squeeze; urgency=low
 
   * Simpler implementation for cron job
 
  -- Michael Stahnke <stahnma@puppetlabs.com>  Tue, 08 Nov 2011 16:06:47 -0800
 
-pe-puppet-dashboard (1.2.2-1puppet13) lenny; urgency=low
+pe-puppet-dashboard (1.2.2-1puppet13) lenny lucid squeeze; urgency=low
 
   * Remove leading slash
 
  -- Michael Stahnke <stahnma@puppetlabs.com>  Tue, 08 Nov 2011 15:26:57 -0800
 
-pe-puppet-dashboard (1.2.2-1puppet12) lenny; urgency=low
+pe-puppet-dashboard (1.2.2-1puppet12) lenny lucid squeeze; urgency=low
 
   * (#10638) Navigation items should be individually selectable
 
  -- Michael Stahnke <stahnma@puppetlabs.com>  Tue, 08 Nov 2011 14:40:29 -0800
 
-pe-puppet-dashboard (1.2.2-1puppet11) lenny; urgency=low
+pe-puppet-dashboard (1.2.2-1puppet11) lenny lucid squeeze; urgency=low
 
   * (#9961) Add nodes to a default group
 
  -- Michael Stahnke <stahnma@puppetlabs.com>  Tue, 08 Nov 2011 13:37:44 -0800
 
-pe-puppet-dashboard (1.2.2-1puppet10) lenny; urgency=low
+pe-puppet-dashboard (1.2.2-1puppet10) lenny lucid squeeze; urgency=low
 
   * Remove bin/external_node from dashboard package for PE
 
  -- Michael Stahnke <stahnma@puppetlabs.com>  Mon, 07 Nov 2011 16:52:28 -0800
 
-pe-puppet-dashboard (1.2.2-1puppet9) lenny; urgency=low
+pe-puppet-dashboard (1.2.2-1puppet9) lenny lucid squeeze; urgency=low
 
   * Updates rules to utilize dpatch
 
  -- Michael Stahnke <stahnma@puppetlabs.com>  Mon, 07 Nov 2011 14:51:50 -0800
 
-pe-puppet-dashboard (1.2.2-1puppet8) lenny; urgency=low
+pe-puppet-dashboard (1.2.2-1puppet8) lenny lucid squeeze; urgency=low
 
   * Add dpatch as a dep for builds
 
  -- Michael Stahnke <stahnma@puppetlabs.com>  Mon, 07 Nov 2011 14:34:11 -0800
 
-pe-puppet-dashboard (1.2.2-1puppet7) lenny; urgency=low
+pe-puppet-dashboard (1.2.2-1puppet7) lenny lucid squeeze; urgency=low
 
   * Add rake task for adding all nodes to a group
 
  -- Michael Stahnke <stahnma@puppetlabs.com>  Fri, 04 Nov 2011 11:44:53 -0700
 
-pe-puppet-dashboard (1.2.2-1puppet6) lenny; urgency=low
+pe-puppet-dashboard (1.2.2-1puppet6) lenny lucid squeeze; urgency=low
 
   * Rename console to console_passwd
 
  -- Michael Stahnke <stahnma@puppetlabs.com>  Fri, 04 Nov 2011 11:18:17 -0700
 
-pe-puppet-dashboard (1.2.2-1puppet5) lenny; urgency=low
+pe-puppet-dashboard (1.2.2-1puppet5) lenny lucid squeeze; urgency=low
 
   * Rename console file to console_passwd 
 
  -- Michael Stahnke <stahnma@deb-builder.puppetlabs.lan>  Fri, 04 Nov 2011 10:39:50 -0700
 
-pe-puppet-dashboard (1.2.2-1puppet4) lenny; urgency=low
+pe-puppet-dashboard (1.2.2-1puppet4) lenny lucid squeeze; urgency=low
 
   * Put zero node patch back in
 
  -- Michael Stahnke <stahnma@deb-builder.puppetlabs.lan>  Fri, 04 Nov 2011 10:39:17 -0700
 
-pe-puppet-dashboard (1.2.2-1puppet3) lenny; urgency=low
+pe-puppet-dashboard (1.2.2-1puppet3) lenny lucid squeeze; urgency=low
 
   * Add configurations files for autenticaiton into apache directory structure
 
  -- Michael Stahnke <stahnma@puppetlabs.com>  Tue, 01 Nov 2011 12:42:48 -0700
 
-pe-puppet-dashboard (1.2.2-1puppet2) lenny; urgency=low
+pe-puppet-dashboard (1.2.2-1puppet2) lenny lucid squeeze; urgency=low
 
   * Add view patch for zero node view
 
  -- Michael Stahnke <stahnma@puppetlabs.com>  Fri, 21 Oct 2011 11:56:56 -0700
 
-pe-puppet-dashboard (1.2.2-1puppet1) lenny; urgency=low
+pe-puppet-dashboard (1.2.2-1puppet1) lenny lucid squeeze; urgency=low
 
   * Rebase to 1.2.2
 
  -- Michael Stahnke <stahnma@puppetlabs.com>  Mon, 10 Oct 2011 13:41:47 -0700
 
-pe-puppet-dashboard (1.2.0-1puppet4) lenny; urgency=low
+pe-puppet-dashboard (1.2.0-1puppet4) lenny lucid squeeze; urgency=low
 
   * Fix fix for ownership and perms of /etc/puppetlabs/puppet-dashboard for #9387 and #9224
 
  -- Matthaus Litteken <matthaus@puppetlabs.com>  Tue, 20 Sep 2011 15:55:00 -0700
 
-pe-puppet-dashboard (1.2.0-1puppet3) lenny; urgency=low
+pe-puppet-dashboard (1.2.0-1puppet3) lenny lucid squeeze; urgency=low
 
   * Fix ownership and perms of /etc/puppetlabs/puppet-dashboard for #9387 and #9224
 
  -- Matthaus Litteken <matthaus@puppetlabs.com>  Mon, 12 Sep 2011 14:00:00 -0700
 
-pe-puppet-dashboard (1.2.0-1puppet2) lenny; urgency=low
+pe-puppet-dashboard (1.2.0-1puppet2) lenny lucid squeeze; urgency=low
 
   * Import 1.2.0
 
  -- Michael Stahnke <stahnma@puppetlabs.com>  Fri, 26 Aug 2011 15:24:22 -0700
 
-pe-puppet-dashboard (1.2rc6-1puppet1) lenny; urgency=low
+pe-puppet-dashboard (1.2rc6-1puppet1) lenny lucid squeeze; urgency=low
 
   * Import 1.2rc6
 
  -- Michael Stahnke <stahnma@puppetlabs.com>  Fri, 17 Jun 2011 13:55:22 -0700
 
-pe-puppet-dashboard (1.0.4-1puppet8) lenny; urgency=low
+pe-puppet-dashboard (1.0.4-1puppet8) lenny lucid squeeze; urgency=low
 
   * [1ec0547] Updating lintian overrides for dashboard.
 
  -- Michael Stahnke <stahnma@puppetlabs.com>  Fri, 17 Jun 2011 13:55:22 -0700
 
-pe-puppet-dashboard (1.0.4-1puppet7) lenny; urgency=low
+pe-puppet-dashboard (1.0.4-1puppet7) lenny lucid squeeze; urgency=low
 
   * [0a6f854] Fix path in mkdir for puppetdashboard.conf
 
  -- Jacob Helwig <jacob@puppetlabs.com>  Wed, 05 Jan 2011 19:54:02 -0500
 
-pe-puppet-dashboard (1.0.4-1puppet6) lenny; urgency=low
+pe-puppet-dashboard (1.0.4-1puppet6) lenny lucid squeeze; urgency=low
 
   * [5f5efaf] Add conffiles for files created by PE installer
 
  -- Jacob Helwig <jacob@puppetlabs.com>  Tue, 04 Jan 2011 14:00:39 -0500
 
-pe-puppet-dashboard (1.0.4-1puppet5) lenny; urgency=low
+pe-puppet-dashboard (1.0.4-1puppet5) lenny lucid squeeze; urgency=low
 
   * Update packaging tooling
 
  -- Jacob Helwig <jacob@puppetlabs.com>  Fri, 17 Dec 2010 11:39:49 -0800
 
-pe-puppet-dashboard (1.0.4-1puppet4) lenny; urgency=low
+pe-puppet-dashboard (1.0.4-1puppet4) lenny lucid squeeze; urgency=low
 
   * [a112e8b] Fix permissions on environment.rb
   * [689390f] Include the public dir in the package
 
  -- Jacob Helwig <jacob@puppetlabs.com>  Sun, 12 Dec 2010 12:58:01 -0800
 
-pe-puppet-dashboard (1.0.4-1puppet3) lenny; urgency=low
+pe-puppet-dashboard (1.0.4-1puppet3) lenny lucid squeeze; urgency=low
 
   * [5e582e8] Fix spelling of dashboard in links, and lintian-overrides
   * [c85bb1a] Include Rakefile in packaged files
 
  -- Jacob Helwig <jacob@puppetlabs.com>  Sun, 12 Dec 2010 12:41:19 -0800
 
-pe-puppet-dashboard (1.0.4-1puppet2) lenny; urgency=low
+pe-puppet-dashboard (1.0.4-1puppet2) lenny lucid squeeze; urgency=low
 
   * [c7a2071] Create missing /var/log/pe-puppet-dashboard
 
  -- Jacob Helwig <jacob@puppetlabs.com>  Sun, 12 Dec 2010 11:05:16 -0800
 
-pe-puppet-dashboard (1.0.4-1puppet1) lenny; urgency=low
+pe-puppet-dashboard (1.0.4-1puppet1) lenny lucid squeeze; urgency=low
 
   * [5065e9a] Start packaging Puppet Dashboard for Puppet Enterprise
 
