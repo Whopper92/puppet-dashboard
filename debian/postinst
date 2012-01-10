@@ -42,6 +42,11 @@ Please fix this and reinstall this package." >&2
         exit 1
     fi
 
+    # Add the apache user to the dashboard group
+    if getent passwd www-data &> /dev/null; then
+      usermod -a -G puppet-dashboard www-data
+    fi
+
     # Setup proper permissions
     touch /var/log/pe-puppet-dashboard/production.log
     chown -R puppet-dashboard:puppet-dashboard /var/log/pe-puppet-dashboard
