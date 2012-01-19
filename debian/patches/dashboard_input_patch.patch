@@ -1,0 +1,577 @@
+commit 7a78d18aa4afc9639ad52665f20a4c850387a775
+Author: Pieter van de Bruggen <pvande@gmail.com>
+Date:   Tue Dec 13 12:00:35 2011 -0800
+
+    (#11365) Rigorously escaping user inputs.
+    
+    This will help us avoid XSS attacks in the future.
+
+diff --git a/app/views/delayed_job_failures/index.html.haml b/app/views/delayed_job_failures/index.html.haml
+index a88177f..657ed38 100644
+--- a/app/views/delayed_job_failures/index.html.haml
++++ b/app/views/delayed_job_failures/index.html.haml
+@@ -23,11 +23,11 @@
+           - @delayed_job_failures.each do |e|
+             - index += 1
+             %dt
+-              %strong= e.summary
++              %strong= h e.summary
+               at
+-              %em= e.created_at
++              %em= h e.created_at
+             %dd
+-              = e.details
++              = h e.details
+               - if e.backtrace
+                 %div.expandable-list
+                   = link_to h('Backtrace'), {}, {:class => 'expandable-link collapsed-link', :id => "expand-#{index}"}
+@@ -35,7 +35,7 @@
+                     %table
+                       - e.backtrace.each do |bt|
+                         %tr
+-                          %td= bt
++                          %td= h bt
+         = pagination_for @delayed_job_failures
+       - else
+         %p No unread task failures.
+diff --git a/app/views/layouts/application.html.haml b/app/views/layouts/application.html.haml
+index b357565..c38b336 100644
+--- a/app/views/layouts/application.html.haml
++++ b/app/views/layouts/application.html.haml
+@@ -31,7 +31,7 @@
+               .close= link_to_function icon(:close), "jQuery('#flash').hide()"
+               %p
+                 = icon(type)
+-                = message
++                = h message
+         = yield
+       #footer
+         %p= link_to "&copy; Copyright #{Time.now.year} Puppet Labs", 'http://puppetlabs.com/'
+diff --git a/app/views/node_classes/_form.html.haml b/app/views/node_classes/_form.html.haml
+index c6bb12e..2eccd79 100644
+--- a/app/views/node_classes/_form.html.haml
++++ b/app/views/node_classes/_form.html.haml
+@@ -3,7 +3,7 @@
+ = header_for(form)
+ 
+ .item
+-  = form.error_messages
++  = h form.error_messages
+ 
+   .element
+     = form.label :name
+diff --git a/app/views/node_classes/index.html.haml b/app/views/node_classes/index.html.haml
+index efe8a1f..e278b28 100644
+--- a/app/views/node_classes/index.html.haml
++++ b/app/views/node_classes/index.html.haml
+@@ -10,16 +10,12 @@
+   %table.main
+     %thead
+       %tr
+-        -# %th.check
+-          -# = check_box_tag "check_all"
+         %th.name
+           Name
+     - if @node_classes.present?
+       %tbody
+         - for node_class in @node_classes
+           %tr[node_class]
+-            -# %td.check
+-              -# = check_box_tag "check_all"
+             %td.name
+               = link_to h(node_class.name), node_class
+       %tfoot
+diff --git a/app/views/node_classes/show.html.haml b/app/views/node_classes/show.html.haml
+index f0b864e..6d04afb 100644
+--- a/app/views/node_classes/show.html.haml
++++ b/app/views/node_classes/show.html.haml
+@@ -3,7 +3,7 @@
+   .header
+     %h2
+       Class:
+-      = @node_class.name
++      = h @node_class.name
+     %ul.actions
+       - unless SETTINGS.enable_read_only_mode
+         %li= link_to 'Edit', edit_node_class_path(@node_class), :class => "edit button"
+diff --git a/app/views/node_groups/index.html.haml b/app/views/node_groups/index.html.haml
+index e442dcb..0b12a39 100644
+--- a/app/views/node_groups/index.html.haml
++++ b/app/views/node_groups/index.html.haml
+@@ -10,16 +10,12 @@
+   %table.main
+     %thead
+       %tr
+-        -# %th.check
+-          -# = check_box_tag "check_all"
+         %th.name
+           Name
+     - if @node_groups.present?
+       %tbody
+         - for node_group in @node_groups
+           %tr[node_group]
+-            -# %td.check
+-              -# = check_box_tag "check_all"
+             %td.name
+               = link_to h(node_group.name), node_group
+       %tfoot
+diff --git a/app/views/node_groups/show.html.haml b/app/views/node_groups/show.html.haml
+index e69677a..e8acefc 100644
+--- a/app/views/node_groups/show.html.haml
++++ b/app/views/node_groups/show.html.haml
+@@ -3,7 +3,7 @@
+   .header
+     %h2
+       Group:
+-      = @node_group.name
++      = h @node_group.name
+     %ul.actions
+       - unless SETTINGS.enable_read_only_mode
+         %li= link_to 'Edit', edit_node_group_path(@node_group), :class => "edit button", :rel => 'inspect'
+@@ -28,12 +28,12 @@
+             - @node_group.node_group_children_with_sources.sort.each do |group,sources|
+               %tr
+                 %td
+-                  %strong= link_to(group.name,group)
++                  %strong= link_to(h(group.name), group)
+                 %td
+                   - if sources.include?(@node_group)
+-                    = group.name
++                    = h group.name
+                   - else
+-                    = sources.map{|p| link_to(p.name,p)}.join(", ")
++                    = sources.map{|p| link_to(h(p.name), p)}.join(", ")
+       - else
+         = describe_no_matches_as 'No child groups'
+     .clearfix{:style => 'clear: both'}
+diff --git a/app/views/nodes/_form.html.haml b/app/views/nodes/_form.html.haml
+index c95c0c7..2002cec 100644
+--- a/app/views/nodes/_form.html.haml
++++ b/app/views/nodes/_form.html.haml
+@@ -9,7 +9,7 @@
+     = form.label :node, "Node"
+     - if @readonly_name
+       %p
+-        = @node.name
++        = h @node.name
+     - else
+       = form.text_field :name, :placeholder => "Enter the node name here"
+ 
+diff --git a/app/views/nodes/_inspections.html.haml b/app/views/nodes/_inspections.html.haml
+index 046479e..64be7d9 100644
+--- a/app/views/nodes/_inspections.html.haml
++++ b/app/views/nodes/_inspections.html.haml
+@@ -15,7 +15,7 @@
+         - node.reports.inspections.limit(reports_limit).each do |report|
+           %tr
+             = report_status_td(report)
+-            %td= link_to report.time, report
++            %td= link_to h(report.time), report
+             %td= report.total_resources
+             %td= report.total_time
+       - if node.reports.inspections.count > reports_limit
+diff --git a/app/views/nodes/_nodes.html.haml b/app/views/nodes/_nodes.html.haml
+index 2e79035..1a493d9 100644
+--- a/app/views/nodes/_nodes.html.haml
++++ b/app/views/nodes/_nodes.html.haml
+@@ -37,7 +37,7 @@
+           &darr; Latest report
+         - column_filter[ selected_status ].each do |status|
+           %th
+-            = status.capitalize
++            = h status.capitalize
+     %tfoot
+       %tr
+         %td{:colspan => container.nil? ? 8 : 9 }
+@@ -57,9 +57,9 @@
+           - unless container.nil?
+             %td
+               - if sources.include?(container)
+-                = node.name
++                = h node.name
+               - else
+-                = sources.map{|s| link_to(s.name,s)}.join(", ")
++                = sources.map{|s| link_to(h(s.name), s)}.join(", ")
+           %td.latest_report
+             = node.last_apply_report ? link_to(h(node.last_apply_report.time), node.last_apply_report) : "Has not reported"
+           - column_filter[ selected_status ].each do |status|
+diff --git a/app/views/nodes/index.html.haml b/app/views/nodes/index.html.haml
+index 92741bf..1c6b234 100644
+--- a/app/views/nodes/index.html.haml
++++ b/app/views/nodes/index.html.haml
+@@ -4,7 +4,7 @@
+   .header
+     %h2.half
+       - if action_name != 'index'
+-        = action_name.titleize.capitalize
++        = h action_name.titleize.capitalize
+         nodes
+       - else
+         Nodes
+diff --git a/app/views/pages/_node_summary_row.haml b/app/views/pages/_node_summary_row.haml
+index 14f0c1e..1265e99 100644
+--- a/app/views/pages/_node_summary_row.haml
++++ b/app/views/pages/_node_summary_row.haml
+@@ -6,7 +6,7 @@
+   %td.count
+     %span= nodes.length
+   %td
+-    %span.label= title
++    %span.label= h title
+     %em= "#{percentage(nodes)}%"
+     %br/
+     %hr{:style => "width: #{percentage(nodes)}%"}
+diff --git a/app/views/pages/home.html.haml b/app/views/pages/home.html.haml
+index b736235..a7c54ba 100644
+--- a/app/views/pages/home.html.haml
++++ b/app/views/pages/home.html.haml
+@@ -11,9 +11,9 @@
+     %ul#home-tabs.tabbed
+       - tab_statuses.each do |tab_status|
+         %li(id="#{tab_status}-tab")
+-          %a{:href => "#"}= tab_status.humanize
++          %a{:href => "#"}= h tab_status.humanize
+     - tab_statuses.each do |tab_status|
+-      %div.panel(id=tab_status)
++      %div.panel(id = tab_status)
+         = render 'nodes/nodes',
+           :nodes           => instance_variable_get("@#{tab_status}_nodes"),
+           :selected_status => tab_status,
+diff --git a/app/views/puppet/transaction/reports/_report.haml b/app/views/puppet/transaction/reports/_report.haml
+index dd27166..ff42918 100644
+--- a/app/views/puppet/transaction/reports/_report.haml
++++ b/app/views/puppet/transaction/reports/_report.haml
+@@ -1,12 +1,12 @@
+ -# FIXME Is anything using this partial?
+ .report.grouping
+-  %h2= report.time
++  %h2= h report.time
+ 
+   .section
+     %h3 Metrics
+     - report.metrics.each do |name, metric|
+       %table.inspector
+-        %caption= name.capitalize
++        %caption= h name.capitalize
+         = render metric
+ 
+   .section
+diff --git a/app/views/puppet/util/logs/_log.haml b/app/views/puppet/util/logs/_log.haml
+index 585d45d..39388a9 100644
+--- a/app/views/puppet/util/logs/_log.haml
++++ b/app/views/puppet/util/logs/_log.haml
+@@ -10,4 +10,4 @@
+   %td
+     %code= h log.line
+   %td.nowrap
+-    %code= log.time
++    %code= h log.time
+diff --git a/app/views/reports/_metrics.html.haml b/app/views/reports/_metrics.html.haml
+index e686738..9ef3745 100644
+--- a/app/views/reports/_metrics.html.haml
++++ b/app/views/reports/_metrics.html.haml
+@@ -3,7 +3,7 @@
+   - if report.metrics.present?
+     - report.metrics.group_by(&:category).sort.each do |category, metrics_in_category|
+       .section
+-        %h4= category.titleize
++        %h4= h category.titleize
+         %table.inspector
+           = render :partial => 'metrics/metrics_table', :locals => {:metrics => metrics_in_category}
+   - else
+diff --git a/app/views/reports/_report.html.haml b/app/views/reports/_report.html.haml
+index 4efe0e4..1cdefa7 100644
+--- a/app/views/reports/_report.html.haml
++++ b/app/views/reports/_report.html.haml
+@@ -17,7 +17,7 @@
+         %div.panel(id="#{user_facing[name].downcase}")
+           = widget.call self, report
+       %li(id="#{user_facing[name].downcase}-tab")
+-        %a= user_facing[name]
++        %a= h user_facing[name]
+   = panels
+ 
+ - Registry.each_callback :report, :tail do |thing|
+diff --git a/app/views/reports/_report_title.html.haml b/app/views/reports/_report_title.html.haml
+index 2de0db8..2b5595e 100644
+--- a/app/views/reports/_report_title.html.haml
++++ b/app/views/reports/_report_title.html.haml
+@@ -1,6 +1,6 @@
+ %span.status{:class => report.status}
+   = report_status_icon(report)
+   Report: 
+-  = link_to report.time, report
++  = link_to h(report.time), report
+ %span.alt for
+-= link_to report.node.name, report.node
++= link_to h(report.node.name), report.node
+diff --git a/app/views/reports/_reports_table.html.haml b/app/views/reports/_reports_table.html.haml
+index 1fc7fc9..b9a8126 100644
+--- a/app/views/reports/_reports_table.html.haml
++++ b/app/views/reports/_reports_table.html.haml
+@@ -29,7 +29,7 @@
+       - for report in reports
+         %tr.nowrap[report]
+           = report_status_td(report)
+-          %td= link_to report.time, report
++          %td= link_to h(report.time), report
+           - unless node
+             %td= link_to_if report.node, h(report.host), node_path(report.node)
+           %td= report.total_resources.to_i
+diff --git a/app/views/reports/_resource_statuses.html.haml b/app/views/reports/_resource_statuses.html.haml
+index a561466..ac28637 100644
+--- a/app/views/reports/_resource_statuses.html.haml
++++ b/app/views/reports/_resource_statuses.html.haml
+@@ -11,11 +11,11 @@
+             - index += 1
+             %dt{:class => cycle( 'odd', 'even' )}
+               - if status.events.empty?
+-                %span{:class => 'non-expandable-bullet'}= status.name
++                %span{:class => 'non-expandable-bullet'}= h status.name
+               - else
+                 = link_to h(status.name), {}, {:class => 'expandable-link collapsed-link', :id => "expand-#{index}"}
+               - if status.file or status.line
+-                = "(#{status.file}:#{status.line})"
++                = h "(#{status.file}:#{status.line})"
+             %dd.expandable.collapsed{:id => "expandable-#{index}"}
+               %table
+                 %tr
+@@ -23,8 +23,8 @@
+                   %th Message
+                 - status.events.each do |event|
+                   %tr{:class => "status #{event.status}"}
+-                    %td= event.property
+-                    %td= popup_md5s( h(event.message), :exclude_md5s => [event.desired_value])
++                    %td= h event.property
++                    %td= popup_md5s(h(event.message), :exclude_md5s => [event.desired_value])
+           %br
+   - else
+     %h3 Events
+diff --git a/app/views/reports/index.html.haml b/app/views/reports/index.html.haml
+index 7ba611e..989c709 100644
+--- a/app/views/reports/index.html.haml
++++ b/app/views/reports/index.html.haml
+@@ -5,7 +5,7 @@
+       Reports
+       - if @node
+         %span.alt for
+-        = link_to @node.name, @node
++        = link_to h(@node.name), @node
+       %span.count== (#{@reports.total_entries})
+ 
+   .item
+diff --git a/app/views/reports/search.html.haml b/app/views/reports/search.html.haml
+index 5f407f0..2a2f631 100644
+--- a/app/views/reports/search.html.haml
++++ b/app/views/reports/search.html.haml
+@@ -12,7 +12,7 @@
+         - flash[:errors].each do |messages|
+           %p
+             - messages.each do |message|
+-              %li= message
++              %li= h message
+ 
+     .section
+       - form_tag url_for(:action => :search), :method => :get do
+@@ -38,6 +38,6 @@
+               - results.each do |file|
+                 %tr
+                   = report_status_td(file.report)
+-                  %td= link_to file.report.time, file.report
++                  %td= link_to h(file.report.time), file.report
+                   %td= link_to h(file.report.host), file.report.node
+                   %td= file.events.detect {|event| event.property == "content"}.previous_value.gsub("{md5}","") rescue "not recorded"
+diff --git a/app/views/shared/_classes.html.haml b/app/views/shared/_classes.html.haml
+index f986cbe..998d305 100644
+--- a/app/views/shared/_classes.html.haml
++++ b/app/views/shared/_classes.html.haml
+@@ -10,11 +10,11 @@
+         - resource.node_classes_with_sources.each do |node_class,sources|
+           %tr
+             %td.name
+-              %strong= link_to(node_class.name,node_class)
++              %strong= link_to(h(node_class.name),node_class)
+             %td
+               - if sources.include?(resource)
+-                = resource.name
++                = h resource.name
+               - else
+-                = sources.map{|source| link_to(source.name,source)}.join(", ")
++                = sources.map{|source| link_to(h(source.name),source)}.join(", ")
+   - else
+     = describe_no_matches_as 'No classes'
+diff --git a/app/views/shared/_global_nav.html.haml b/app/views/shared/_global_nav.html.haml
+index 0a30e66..4be7116 100644
+--- a/app/views/shared/_global_nav.html.haml
++++ b/app/views/shared/_global_nav.html.haml
+@@ -9,7 +9,7 @@
+           - css << "width: #{SETTINGS.custom_logo_width}"
+           %a{:href => root_path, :title => SETTINGS.custom_logo_alt_text, :style => css.join('; ')} Puppet Dashboard
+         %li#dashboard-version{:class => active_if(request.url == release_notes_url)}
+-          = link_to APP_VERSION, APP_VERSION_LINK
++          = link_to h(APP_VERSION), APP_VERSION_LINK
+         %li#navigation-home{:class => active_if(request.url == root_url)}
+           = link_to "Home", root_path
+         %li#navigation-nodes{:class => active_if(controller_name == "nodes" && action_name == "index")}
+diff --git a/app/views/shared/_groups.html.haml b/app/views/shared/_groups.html.haml
+index fbcbd90..5f3f338 100644
+--- a/app/views/shared/_groups.html.haml
++++ b/app/views/shared/_groups.html.haml
+@@ -10,11 +10,11 @@
+         - resource.node_groups_with_sources.sort.each do |group,sources|
+           %tr
+             %td
+-              %strong= link_to(group.name,group)
++              %strong= link_to(h(group.name),group)
+             %td
+               - if sources.include?(resource)
+-                = resource.name
++                = h resource.name
+               - else
+-                = sources.map{|source| link_to(source.name,source)}.join(", ")
++                = sources.map{|source| link_to(h(source.name),source)}.join(", ")
+   - else
+     = describe_no_matches_as 'No groups'
+diff --git a/app/views/shared/_inspector.html.haml b/app/views/shared/_inspector.html.haml
+index e102798..e82abdd 100644
+--- a/app/views/shared/_inspector.html.haml
++++ b/app/views/shared/_inspector.html.haml
+@@ -1,14 +1,14 @@
+ %table.inspector
+   - if options[:caption]
+-    %caption= options[:caption]
++    %caption= h options[:caption]
+   %thead
+     %tr
+-      %th.key= (options[:key_title] || key).to_s.titleize
++      %th.key= h (options[:key_title] || key).to_s.titleize
+       - unless options[:key_only]
+-        %th.value{:colspan => 2}= (options[:value_title] || value).to_s.titleize
++        %th.value{:colspan => 2}= h (options[:value_title] || value).to_s.titleize
+   %tbody
+     - inspector.each do |key, value|
+       %tr
+-        %td.key= key
++        %td.key= h key
+         - unless options[:key_only]
+-          %td{:colspan => 2}= value
++          %td{:colspan => 2}= h value
+diff --git a/app/views/shared/_node_manager_sidebar.html.haml b/app/views/shared/_node_manager_sidebar.html.haml
+index 1b84449..bd19116 100644
+--- a/app/views/shared/_node_manager_sidebar.html.haml
++++ b/app/views/shared/_node_manager_sidebar.html.haml
+@@ -5,7 +5,7 @@
+ 
+   - if DelayedJobFailure.unread.count > 0
+     %p.failure
+-      =link_to "#{ pluralize DelayedJobFailure.unread.count, 'new failed task' }", "/delayed_job_failures"
++      = link_to "#{ pluralize DelayedJobFailure.unread.count, 'new failed task' }", "/delayed_job_failures"
+   - if Delayed::Job.count > 0
+     %p.warning
+       %em= "#{ pluralize Delayed::Job.count, 'pending task' }"
+@@ -15,7 +15,6 @@
+ 
+ .group
+   %h3{:class => active_if(controller_name == "nodes" && action_name == "index")}= link_to "Nodes", nodes_path
+-  -# %span.count= Node.unhidden.count
+   %p.help
+     %a{ :href => 'http://links.puppetlabs.com/dashboard1.2_node_summary_help', :target => '_blank' }
+       Help
+@@ -35,9 +34,9 @@
+ 
+         %tr{:class => "#{status} #{active_if(controller_name == 'nodes' && action_name == action_status && parent.nil?)}"}
+           %td.count
+-            = link_to node_count, nodes_path
++            = link_to h(node_count), nodes_path
+           %td.label
+-            = link_to status.capitalize, nodes_path
++            = link_to h(status.capitalize), nodes_path
+           %td.percent
+             = link_to "#{percent}<em>%</em>", nodes_path, {:style => "width: #{percent}%"}
+ 
+@@ -45,7 +44,7 @@
+       %table.secondary
+         %tr{:class => active_if(controller_name == 'nodes' && action_name == 'hidden' && parent.nil?)}
+           %td.count
+-            = link_to Node.hidden.count, hidden_nodes_path
++            = link_to h(Node.hidden.count), hidden_nodes_path
+           %td.label
+             = link_to "Hidden", hidden_nodes_path
+ 
+diff --git a/app/views/shared/_node_manager_sidebar_for_type.html.haml b/app/views/shared/_node_manager_sidebar_for_type.html.haml
+index b7dd2e3..3a3694e 100644
+--- a/app/views/shared/_node_manager_sidebar_for_type.html.haml
++++ b/app/views/shared/_node_manager_sidebar_for_type.html.haml
+@@ -9,14 +9,14 @@
+ - path_for_show = "#{table.singularize}_path"
+ 
+ .group
+-  %h3{:class => active_if(controller_name == table && action_name == "index")}= link_to(label, send(path_for_index))
++  %h3{:class => active_if(controller_name == table && action_name == "index")}= link_to(h(label), send(path_for_index))
+   - entries = type.with_nodes_count
+   - unless entries.empty?
+     %ul
+       - for entry in entries
+         %li{:class => active_if(controller_name == table && ivar && ivar == entry)}
+-          = link_to entry.name, send(path_for_show, entry)
++          = link_to h(entry.name), send(path_for_show, entry)
+           %span.count= entry.nodes_count
+   .footer.actionbar
+     - unless SETTINGS.enable_read_only_mode
+-      = link_to "Add #{label.downcase}", send(path_for_new), :class => 'button'
++      = link_to "Add #{h(label.downcase)}", send(path_for_new), :class => 'button'
+diff --git a/app/views/shared/_parameters.html.haml b/app/views/shared/_parameters.html.haml
+index baad290..000de98 100644
+--- a/app/views/shared/_parameters.html.haml
++++ b/app/views/shared/_parameters.html.haml
+@@ -6,7 +6,7 @@
+       %p.error
+         %strong Warning:
+         The following parameters have multiple conflicting values:
+-        = [*resource.errors.on(:parameters)].join(", ")
++        = h [*resource.errors.on(:parameters)].join(", ")
+     %table.inspector
+       %thead
+         %tr
+@@ -17,13 +17,13 @@
+         - resource.compiled_parameters(true).each do |param|
+           %tr
+             %td{:style => ("background-color: pink;" if param.sources.size > 1)}
+-              %tt= param.name
++              %tt= h param.name
+             %td
+-              %tt= param.value
++              %tt= h param.value
+             %td
+               - if param.sources == Set[resource]
+-                = resource.name
++                = h resource.name
+               - else
+-                = param.sources.map{|source| link_to(source.name,node_group_path(source.id))}.join(", ")
++                = param.sources.map{|source| link_to(h(source.name),node_group_path(source.id))}.join(", ")
+   - else
+     = describe_no_matches_as 'No parameters'
+diff --git a/app/views/timeline_events/_timeline_event.html.haml b/app/views/timeline_events/_timeline_event.html.haml
+index d7dcbcd..177d052 100644
+--- a/app/views/timeline_events/_timeline_event.html.haml
++++ b/app/views/timeline_events/_timeline_event.html.haml
+@@ -11,13 +11,13 @@
+ 
+     %li{:class => te.object_type}
+       %span.date
+-        = te.created_at
++        = h te.created_at
+         &rarr;
+       -# Not all subjects can be linked, e.g. you can't link to a Parameter
+-      - if not is_current and link = link_to(subject, te.subject) rescue nil
+-        = te.subject_type
++      - if not is_current and link = link_to(h(subject), te.subject) rescue nil
++        = h te.subject_type
+         = link
+       - else
+-        = subject
+-      = te.action
+-      = link_to_unless is_secondary, secondary, te.secondary_subject if te.secondary_subject_type
++        = h subject
++      = h te.action
++      = link_to_unless is_secondary, h(secondary), te.secondary_subject if te.secondary_subject_type
