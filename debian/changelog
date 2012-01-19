@@ -1,3 +1,9 @@
+pe-puppet-dashboard (1.2.4-1puppet20) lenny lucid squeeze; urgency=low
+
+  * (#11365) Fix potential XSS in dashboard
+
+ -- Michael Stahnke <stahnma@puppetlabs.com>  Thu, 19 Jan 2012 23:04:03 +0000
+
 pe-puppet-dashboard (1.2.4-1puppet19) lenny lucid squeeze; urgency=low
 
   * Add www-data to puppet-dashboard group in postinst
