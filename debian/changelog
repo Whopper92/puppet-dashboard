@@ -1,3 +1,9 @@
+pe-puppet-dashboard (1.2.4-1puppet21) lenny lucid squeeze; urgency=low
+
+  * Patch to fix CVE-2012-0891
+
+ -- Michael Stahnke <stahnma@puppetlabs.com>  Fri, 20 Jan 2012 21:34:53 +0000
+
 pe-puppet-dashboard (1.2.4-1puppet20) lenny lucid squeeze; urgency=low
 
   * (#11365) Fix potential XSS in dashboard
