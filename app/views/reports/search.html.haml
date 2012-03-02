@@ -12,7 +12,7 @@
         - flash[:errors].each do |messages|
           %p
             - messages.each do |message|
-              %li= message
+              %li= h message
 
     .section
       - form_tag url_for(:action => :search), :method => :get do
@@ -30,14 +30,14 @@
           %table.inspector
             %thead
               %tr
-                %th.status &nbsp;
-                %th Time
-                %th Node &uarr;
-                %th Checksum
+                %th.status{:scope => :col} &nbsp;
+                %th{:scope => :col} Time
+                %th{:scope => :col} Node &uarr;
+                %th{:scope => :col} Checksum
             %tbody
               - results.each do |file|
                 %tr
                   = report_status_td(file.report)
-                  %td= link_to file.report.time, file.report
+                  %td= link_to h(file.report.time), file.report
                   %td= link_to h(file.report.host), file.report.node
                   %td= file.events.detect {|event| event.property == "content"}.previous_value.gsub("{md5}","") rescue "not recorded"
