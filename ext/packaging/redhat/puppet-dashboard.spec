@@ -1,8 +1,8 @@
 %global confdir ext/packaging/redhat
 %global initrddir /etc/rc.d/init.d
 # VERSION is subbed out during rake srpm process
-%global realversion 1.2.4
-%global rpmversion 1.2.4
+%global realversion 1.2.6
+%global rpmversion 1.2.6
 
 Name:           puppet-dashboard
 Version:        %{rpmversion}
@@ -51,7 +51,6 @@ install -p -d -m0755 $RPM_BUILD_ROOT/%{_datadir}/%{name}/vendor
 install -p -d -m0755 $RPM_BUILD_ROOT/%{_defaultdocdir}/%{name}-%{version}
 cp -p -r app bin config db ext lib public Rakefile script spec $RPM_BUILD_ROOT/%{_datadir}/%{name}
 install -Dp -m0644 config/database.yml.example $RPM_BUILD_ROOT/%{_datadir}/%{name}/config/database.yml
-install -Dp -m0644 RELEASE_NOTES.md $RPM_BUILD_ROOT/%{_datadir}/%{name}/RELEASE_NOTES.md
 install -Dp -m0644 VERSION $RPM_BUILD_ROOT/%{_datadir}/%{name}/VERSION
 mkdir -p $RPM_BUILD_ROOT/%{_datadir}/%{name}/spool
 
@@ -110,13 +109,12 @@ fi
 
 %files
 %defattr(-,root,root,)
-%doc CHANGELOG LICENSE README.markdown README_PACKAGES.markdown RELEASE_NOTES.md
+%doc CHANGELOG LICENSE README.markdown README_PACKAGES.markdown
 %attr(-,puppet-dashboard,puppet-dashboard) %config(noreplace) %{_datadir}/%{name}/config/*
 %{initrddir}/puppet-dashboard
 %{initrddir}/puppet-dashboard-workers
-%{_sysconfdir}/sysconfig/puppet-dashboard
-%{_sysconfdir}/logrotate.d/puppet-dashboard
-%attr(-,puppet-dashboard,puppet-dashboard) %doc %{_datadir}/puppet-dashboard/RELEASE_NOTES.md
+%config(noreplace) %{_sysconfdir}/sysconfig/puppet-dashboard
+%config %{_sysconfdir}/logrotate.d/puppet-dashboard
 %attr(-,puppet-dashboard,puppet-dashboard) %doc %{_datadir}/puppet-dashboard/VERSION
 %attr(-,puppet-dashboard,puppet-dashboard) %{_datadir}/puppet-dashboard/Rakefile
 %attr(-,puppet-dashboard,puppet-dashboard) %dir %{_datadir}/%{name}/config
@@ -135,8 +133,8 @@ fi
 #%attr(-,puppet-dashboard,puppet-dashboard) %dir /var/log/%{name}
 
 %changelog
-* Mon Dec 12 2011  Michael Stahnke <stahnma@puppetlabs.com> -  1.2.4-1
-- Build for 1.2.4
+* Wed Feb 22 2012  Michael Stahnke <stahnma@puppetlabs.com> -  1.2.6-1
+- Build for 1.2.6
 
 * Mon Jul 04 2011 Michael Stahnke <stahnma@puppetlabs.com> - 1.1.9-2
 - Updating spec to fix some rpmlint issues

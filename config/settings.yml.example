@@ -23,7 +23,7 @@ private_key_path: 'certs/dashboard.private_key.pem'
 public_key_path: 'certs/dashboard.public_key.pem'
 
 # Hostname of the certificate authority.
-ca_server: 'puppetca'
+ca_server: 'puppet'
 
 # Port for the certificate authority.
 ca_port: 8140
@@ -32,20 +32,20 @@ ca_port: 8140
 key_length: 1024
 
 # The "inventory service" allows you to connect to a puppet master to retrieve and node facts
-enable_inventory_service: true
+enable_inventory_service: false
 
 # Hostname of the inventory server.
-inventory_server: 'localhost'
+inventory_server: 'puppet'
 
 # Port for the inventory server.
 inventory_port: 8140
 
 # Set this to true to allow Dashboard to display diffs on files that
 # are archived in the file bucket.
-use_file_bucket_diffs: true
+use_file_bucket_diffs: false
 
 # Hostname of the file bucket server.
-file_bucket_server: 'localhost'
+file_bucket_server: 'puppet'
 
 # Port for the file bucket server.
 file_bucket_port: 8140
@@ -66,8 +66,11 @@ use_external_node_classification: true
 datetime_format: '%Y-%m-%d %H:%M %Z'
 date_format: '%A, %B %e, %Y'
 
-# Set this to the URL of an image. The image will be scaled to 155x23 pixels.
-#custom_logo_url: 'http://www.puppetlabs.com/images/puppet-short.png'
+# Set this to the URL of an image. The image will be scaled to the specified dimensions.
+custom_logo_url: '/images/dashboard_logo.png'
+custom_logo_width: 155px
+custom_logo_height: 23px
+custom_logo_alt_text: 'Puppet Dashboard'
 
 # We will be deprecating using "http://dashboard_servername/reports" as the puppet master's reporturl.
 # Set this to 'true' once you have changed all your puppet masters to send reports to

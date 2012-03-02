@@ -1,7 +1,7 @@
 .header
   %h2
     = render 'report_title', :report => report
-  - unless SETTINGS.enable_read_only_mode
+  - unless SETTINGS.enable_read_only_mode || session['ACCESS_CONTROL_ROLE'] == 'READ_ONLY'
     %ul.actions
       - Registry.each_callback :report, :actions do |thing|
         = thing.call self, report
@@ -17,7 +17,7 @@
         %div.panel(id="#{user_facing[name].downcase}")
           = widget.call self, report
       %li(id="#{user_facing[name].downcase}-tab")
-        %a= user_facing[name]
+        %a= h user_facing[name]
   = panels
 
 - Registry.each_callback :report, :tail do |thing|
