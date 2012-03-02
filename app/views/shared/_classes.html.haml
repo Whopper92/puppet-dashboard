@@ -4,17 +4,18 @@
     %table.inspector
       %thead
         %tr
-          %th.name Class
-          %th Source
+          %th.name{:scope => :col} Class
+          %th{:scope => :col} Source
       %tbody
         - resource.node_classes_with_sources.each do |node_class,sources|
           %tr
             %td.name
-              %strong= link_to(node_class.name,node_class)
+              %strong= link_to(h(node_class.name),node_class)
             %td
               - if sources.include?(resource)
-                = resource.name
+                = h resource.name
               - else
-                = sources.map{|source| link_to(source.name,source)}.join(", ")
+                = sources.map{|source| link_to(h(source.name),source)}.join(", ")
   - else
     = describe_no_matches_as 'No classes'
+%br.clear
