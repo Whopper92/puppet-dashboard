@@ -213,7 +213,6 @@ dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/tasks/summarize_reports
 dir-or-file-in-opt opt/puppet/share/puppet-dashboard/log
 dir-or-file-in-opt opt/puppet/share/puppet-dashboard/public
 dir-or-file-in-opt opt/puppet/share/puppet-dashboard/Rakefile
-dir-or-file-in-opt opt/puppet/share/puppet-dashboard/RELEASE_NOTES.md
 dir-or-file-in-opt opt/puppet/share/puppet-dashboard/script/
 dir-or-file-in-opt opt/puppet/share/puppet-dashboard/script/about
 dir-or-file-in-opt opt/puppet/share/puppet-dashboard/script/autospec
