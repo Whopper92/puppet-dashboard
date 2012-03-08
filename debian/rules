@@ -29,7 +29,7 @@ binary-install/pe-puppet-dashboard::
 	    $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard
 	cp $(CURDIR)/config/database.yml.example $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_etc)/puppet-dashboard/database.yml
 	cp $(CURDIR)/config/settings.yml.example $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_etc)/puppet-dashboard/settings.yml
-#	cp -r $(CURDIR)/public $(CURDIR)/debian/$(cdbs_curpkg)/var/opt/$(cdbs_curpkg)
+	cp -pr $(CURDIR)/public/* $(CURDIR)/debian/$(cdbs_curpkg)/opt/puppet/share/puppet-dashboard/public
 	chmod -R a+rx $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/script
 	rm -rf $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/ext/packaging
 	mkdir -p $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_etc)/httpd/conf.d
