@@ -1,3 +1,9 @@
+pe-puppet-dashboard (1.2.6-1puppet10) lenny lucid squeeze precise; urgency=low
+
+  * Ensure pid directory is created, not just tmp
+
+ -- Michael Stahnke <stahnma@puppetlabs.com>  Thu, 08 Mar 2012 22:01:03 +0000
+
 pe-puppet-dashboard (1.2.6-1puppet9) lenny lucid squeeze precise; urgency=low
 
   * Fix missing pids dir in dashboard redo
