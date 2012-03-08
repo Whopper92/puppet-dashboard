@@ -43,7 +43,7 @@ Please fix this and reinstall this package." >&2
     fi
 
     # Add the apache user to the dashboard group
-    if getent passwd www-data &> /dev/null; then
+    if getent passwd www-data > /dev/null; then
       usermod -a -G puppet-dashboard www-data
     fi
 
