@@ -48,6 +48,7 @@ Please fix this and reinstall this package." >&2
     fi
 
     # Setup proper permissions
+    mkdir -p /var/log/pe-puppet-dashboard
     touch /var/log/pe-puppet-dashboard/production.log
     chown -R puppet-dashboard:puppet-dashboard /var/log/pe-puppet-dashboard
     chown -R puppet-dashboard:puppet-dashboard /opt/puppet/share/puppet-dashboard/spool
