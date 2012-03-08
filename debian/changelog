@@ -1,3 +1,9 @@
+pe-puppet-dashboard (1.2.6-1puppet8) lenny lucid squeeze precise; urgency=low
+
+  * Update postinst to ensure /var/log/pe-puppet-dashboard exists
+
+ -- Michael Stahnke <stahnma@puppetlabs.com>  Thu, 08 Mar 2012 19:48:38 +0000
+
 pe-puppet-dashboard (1.2.6-1puppet7) lenny lucid squeeze precise; urgency=low
 
   * Update due to freight being angry
