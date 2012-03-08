@@ -1,3 +1,9 @@
+pe-puppet-dashboard (1.2.6-1puppet12) lenny lucid squeeze precise; urgency=low
+
+  * Copy over public data
+
+ -- Michael Stahnke <stahnma@puppetlabs.com>  Thu, 08 Mar 2012 22:46:48 +0000
+
 pe-puppet-dashboard (1.2.6-1puppet11) lenny lucid squeeze precise; urgency=low
 
   * Fix permissions on pids dir...again
