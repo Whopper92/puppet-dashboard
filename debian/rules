@@ -11,8 +11,9 @@ ruby_ver = 1.8
 binary-install/pe-puppet-dashboard::
 	mkdir -p $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_etc)/puppet-dashboard
 	mkdir -p $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard
-#	mkdir -p $(CURDIR)/debian/$(cdbs_curpkg)/var/opt/$(cdbs_curpkg)/tmp
-#	mkdir -p $(CURDIR)/debian/$(cdbs_curpkg)/var/log/pe-puppet-dashboard
+	mkdir -p $(CURDIR)/debian/$(cdbs_curpkg)/opt/puppet/share/puppet-dashboard/tmp
+	mkdir -p $(CURDIR)/debian/$(cdbs_curpkg)/opt/puppet/share/puppet-dashboard/public
+	mkdir -p $(CURDIR)/debian/$(cdbs_curpkg)/var/log/pe-puppet-dashboard
 	mkdir -p $(CURDIR)/debian/$(cdbs_curpkg)/etc/puppetlabs/httpd/console_apps.d
 	dh_installinit --name=pe-puppet-dashboard-workers
 	cp -r app \
