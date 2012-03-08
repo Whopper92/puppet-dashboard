@@ -52,6 +52,7 @@ Please fix this and reinstall this package." >&2
     touch /var/log/pe-puppet-dashboard/production.log
     chown -R puppet-dashboard:puppet-dashboard /var/log/pe-puppet-dashboard
     chown -R puppet-dashboard:puppet-dashboard /opt/puppet/share/puppet-dashboard/spool
+    chown -R puppet-dashboard:puppet-dashboard /opt/puppet/share/puppet-dashboard/tmp
     chown -R puppet-dashboard:puppet-dashboard /opt/puppet/share/puppet-dashboard/public
     chown -R puppet-dashboard:puppet-dashboard /opt/puppet/share/puppet-dashboard/config/environment.rb
 
