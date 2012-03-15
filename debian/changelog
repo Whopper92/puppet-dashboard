@@ -1,3 +1,9 @@
+pe-puppet-dashboard (1.2.6-1puppet15) lenny lucid squeeze precise; urgency=low
+
+  * Add another dashboard layout patch
+
+ -- Michael Stahnke <stahnma@puppetlabs.com>  Thu, 15 Mar 2012 21:17:50 +0000
+
 pe-puppet-dashboard (1.2.6-1puppet14) lenny lucid squeeze precise; urgency=low
 
   * Add account information option to header patch
