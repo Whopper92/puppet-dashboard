@@ -1,3 +1,9 @@
+pe-puppet-dashboard (1.2.6-1puppet17) lenny lucid squeeze precise; urgency=low
+
+  * Adding yet another dashboard patch to protect against regression
+
+ -- Michael Stahnke <stahnma@puppetlabs.com>  Wed, 21 Mar 2012 00:15:36 +0000
+
 pe-puppet-dashboard (1.2.6-1puppet16) lenny lucid squeeze precise; urgency=low
 
   * Insert rails upgrade (2.3.14) patch
