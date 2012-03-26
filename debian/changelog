@@ -1,3 +1,9 @@
+pe-puppet-dashboard (1.2.6-1puppet19) lenny lucid squeeze precise; urgency=low
+
+  * Imported Upstream version 1.2.7
+
+ -- Michael Stahnke <stahnma@puppetlabs.com>  Mon, 26 Mar 2012 21:13:55 +0000
+
 pe-puppet-dashboard (1.2.6-1puppet18) lenny lucid squeeze precise; urgency=low
 
   * Reducing number of patches to one
