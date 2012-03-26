@@ -1,8 +1,8 @@
 %global confdir ext/packaging/redhat
 %global initrddir /etc/rc.d/init.d
 # VERSION is subbed out during rake srpm process
-%global realversion 1.2.6
-%global rpmversion 1.2.6
+%global realversion 1.2.7
+%global rpmversion 1.2.7
 
 Name:           puppet-dashboard
 Version:        %{rpmversion}
@@ -133,8 +133,8 @@ fi
 #%attr(-,puppet-dashboard,puppet-dashboard) %dir /var/log/%{name}
 
 %changelog
-* Wed Feb 22 2012  Michael Stahnke <stahnma@puppetlabs.com> -  1.2.6-1
-- Build for 1.2.6
+* Mon Mar 26 2012  Michael Stahnke <stahnma@puppetlabs.com> -  1.2.7-1
+- Build for 1.2.7
 
 * Mon Jul 04 2011 Michael Stahnke <stahnma@puppetlabs.com> - 1.1.9-2
 - Updating spec to fix some rpmlint issues
