@@ -1,6 +1,7 @@
-pe-puppet-dashboard (1.2.6-1puppet19) lenny lucid squeeze precise; urgency=low
+pe-puppet-dashboard (1.2.7-1puppet1) lenny lucid squeeze precise; urgency=low
 
   * Imported Upstream version 1.2.7
+  * Remove jumbo patch
 
  -- Michael Stahnke <stahnma@puppetlabs.com>  Mon, 26 Mar 2012 21:13:55 +0000
 
