@@ -32,6 +32,7 @@ binary-install/pe-puppet-dashboard::
 	cp -pr $(CURDIR)/public/* $(CURDIR)/debian/$(cdbs_curpkg)/opt/puppet/share/puppet-dashboard/public
 	chmod -R a+rx $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/script
 	rm -rf $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/ext/packaging
+	rm -rf $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/config/initializers/session_store.rb
 	mkdir -p $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_etc)/httpd/conf.d
 	touch $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_etc)/httpd/conf.d/puppetdashboard.conf
 	# Copy example auth files
