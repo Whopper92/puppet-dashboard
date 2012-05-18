@@ -1,0 +1,30 @@
+From e3ed27eb23be839e486c9ede4cc47e005e5dfac1 Mon Sep 17 00:00:00 2001
+From: Max Martin <max@puppetlabs.com>
+Date: Mon, 14 May 2012 14:34:42 -0700
+Subject: [PATCH] (#5879) Remove finder on obsolete URL column
+
+This commit removes a finder method from the reports controller that
+referenced the URL field on nodes, since URL was removed from the nodes
+table with a migration earlier this year. This lead to several customers
+having issues that left them unable to add new nodes to their
+infrastructure. It is not known why this has not caused more widespread
+problems (and frankly, I find it kind of mysterious). Either way, this
+fix has been tested by customers, and has resolved their issues.
+---
+ app/controllers/reports_controller.rb |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/app/controllers/reports_controller.rb b/app/controllers/reports_controller.rb
+index 01d0d9a..60132f4 100644
+--- a/app/controllers/reports_controller.rb
++++ b/app/controllers/reports_controller.rb
+@@ -1,5 +1,5 @@
+ class ReportsController < InheritedResources::Base
+-  belongs_to :node, :optional => true, :finder => :find_by_url!
++  belongs_to :node, :optional => true
+   protect_from_forgery :except => [:create, :upload]
+ 
+   before_filter :raise_if_enable_read_only_mode, :only => [:new, :edit, :update, :destroy]
+-- 
+1.7.7.6
+
