@@ -1,3 +1,9 @@
+pe-puppet-dashboard (1.2.7-1puppet4) lenny lucid squeeze precise; urgency=low
+
+  * Add patch for CVE-2012-2660
+
+ -- William Hopper <whopper@puppetlabs.com>  Fri, 15 Jun 2012 16:11:00 +0000
+
 pe-puppet-dashboard (1.2.7-1puppet3) lenny lucid squeeze precise; urgency=low
 
   * Add patch for #5879 remove finder on URL column
